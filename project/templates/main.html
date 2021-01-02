@@ -8,6 +8,7 @@
   <table>
     <tr>
       <form action="{{ url_for('new_customer') }}" method="post">
+        {{ form.csrf_token }}
         <td>
           <label>Customer Name:</label>
           <input name="name" type="text">
