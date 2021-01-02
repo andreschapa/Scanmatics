@@ -1,0 +1,50 @@
+{% extends "_base.html" %}
+{% block content %}
+
+<h1>Welcome to your Scanmatics account.</h1>
+<a href="{{ url_for('logout') }}">Logout</a>
+<div class="add-customer">
+  <h3>Add a new customer:</h3>
+  <table>
+    <tr>
+      <form action="{{ url_for('new_customer') }}" method="post">
+        <td>
+          <label>Customer Name:</label>
+          <input name="name" type="text">
+        </td>
+        <td>
+          &nbsp;
+          &nbsp;
+          <input class="button" type="submit" value="Save">
+        </td>
+      </form>
+    </tr>
+  </table>
+</div>
+<div class="customers">
+  <br>
+  <br>
+  <h2>Customers:</h2>
+  <div class="datagrid">
+    <table>
+      <thead>
+        <tr>
+          <th width="300px"><strong>Customer Name</strong></th>
+          <th><strong>Actions</strong></th>
+        </tr>
+      </thead>
+      {% for customer in customers %}
+        <tr>
+          <td width="300px">{{ customer.name }}</td>
+          <td>
+            <a href="{{ url_for('delete_customer', customer_id = customer.customer_id) }}">Delete</a>  
+          </td>
+        </tr>
+      {% endfor %}
+    </table>
+  </div>
+  <br>
+  <br>
+</div>
+
+{% endblock %}
