@@ -31,28 +31,33 @@ def login_required(test):
 @app.route('/logout/')
 def logout():
     session.pop('logged_in', None)
+    session.pop('company_id', None)
     flash('Adios!')
     return redirect(url_for('login'))
 
 @app.route('/', methods=['GET', 'POST'])
 def login():
     error=None
+    form= LoginForm(request.form)
     if request.method== 'POST':
-        if request.form['username'] != app.config['USERNAME'] \
-            or request.form['password'] != app.config['PASSWORD']:
-            error='Invalid Credentials. Please try again.'
-            return render_template('login.html', error=error)
+        if form.validate_on_submit():
+            user=User.query.filter_by(name=request.form['name']).first()
+            if user is not None and user.password == request.form['password'] and user.company == request.form['company']:
+                session['logged_in']= True
+                session['company_id']=user.company
+                flash('Welcome!')
+                return redirect(url_for('main'))
+            else:
+                error= 'Invalid username, company name, or password.'
         else:
-            session['logged_in']= True
-            flash('Welcome!')
-            return redirect(url_for('main'))
-    return render_template('login.html')
-
+            error= 'All fields are required.'
+    return render_template('login.html', form=form, error=error)
+       
 
 @app.route('/main/')
 @login_required
 def main():
-    customers=db.session.query(Customer).order_by(Customer.name.asc())  ##Wil need to change structure of how to query based on which customer from certain company is logged in. 
+    customers=db.session.query(Customer).filter_by(company_id = session['company_id']).order_by(Customer.name.asc())  ##Wil need to change structure of how to query based on which customer from certain company is logged in. 
     return render_template(
         'main.html',
         form=AddCustomerForm(request.form),
@@ -66,7 +71,8 @@ def new_customer():
     if request.method=='POST':
         if form.validate_on_submit():
             new_customer=Customer(
-                form.name.data
+                form.name.data,
+                session['company_id']
             )
             db.session.add(new_customer)
             db.session.commit()

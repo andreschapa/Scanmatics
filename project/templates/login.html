@@ -1,26 +1,33 @@
 {% extends "_base.html" %}
 {% block content %}
 
-<img src=https://media-exp1.licdn.com/dms/image/C4E0BAQGOJSUvpp8PjA/company-logo_200_200/0/1606878128180?e=1617840000&v=beta&t=df0EPMEzBcC51Yo-IO46mvkA-xEAkUrLw7ThFfiUc-I>
+<img src=https://media-exp1.licdn.com/dms/image/C4E0BAQH9ry_VPEPBPw/company-logo_200_200/0/1609696203090?e=1617840000&v=beta&t=zZvbSC0Zr3i8zwrTiRD5o6XwapPBs4lByvXKSOJi6ZA>
 <h1>Please login to your Scanmatics account.</h1>
 
-<form action="/" method="post">
-    
-    <div class="input-group">
-        <label for="name">Username</label>
-        <input type="text" id="username" name="username" value="
-        {{request.form.username}}">
-    </div>
-    <div class="input-group">
-        <label for="mail">Password:</label>
-        <input type="password" id="password" name="password" value="{{
-        request.form.password }}"/>
+<form method="post" action="/">
+    {{ form.csrf_token }}
+    <div>
+      {{ form.name.label }}
+      {{ form.name }}
     </div>
     <div>
-        <button type="submit">Login</button>
+      {{ form.password.label }}
+      {{ form.password }}
     </div>
-</form>
-<p><em>Use 'admin' for the username and password.</em></p>
+    <div>
+        {{ form.company.label }}
+        {{ form.company }}
+      </div>
+    <div>
+      <input type="submit" value="Submit">
+    </div>
+  </form>
+  
+  <br>
+  
+  <div class="">
+    <em>Need an account? </em><a href="/register">Signup!</a>
+  </div>
 
 {% endblock %}
 

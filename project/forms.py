@@ -9,7 +9,7 @@ class AddCustomerForm(Form):
 class RegisterForm(Form):
     name= StringField(
         'Username',
-        validators=[DataRequired(), Length(min=6, max=5)]
+        validators=[DataRequired(), Length(min=6, max=30)]
     )
     email= StringField(
         'Email',
