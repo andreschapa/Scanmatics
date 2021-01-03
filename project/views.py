@@ -1,17 +1,18 @@
 #views
+from forms import AddCustomerForm, RegisterForm, LoginForm
 
 from functools import wraps
 from flask import Flask, flash, redirect, render_template, \
 request, session, url_for
 from flask_sqlalchemy import SQLAlchemy
-from forms import AddCustomerForm
+
 #config
 
 app=Flask(__name__)
 app.config.from_object('_config')
 db=SQLAlchemy(app)
 
-from models import Customer
+from models import Customer, User
 
 #helper functions
 
@@ -81,3 +82,22 @@ def delete_customer(customer_id):
     db.session.commit()
     flash('Customer has been deleted.')
     return redirect(url_for('main'))
+
+#register customer
+@app.route('/register/', methods=['GET', 'POST'])
+def register():
+    error=None
+    form=RegisterForm(request.form)
+    if request.method== 'POST':
+        if form.validate_on_submit():
+            new_user= User(
+                form.name.data,
+                form.email.data,
+                form.password.data,
+                form.company.data,
+            )
+            db.session.add(new_user)
+            db.session.commit()
+            flash('Thanks for registering. Please login.')
+            return redirect(url_for('login'))
+    return render_template('register.html', form=form, error=error)
