@@ -41,4 +41,6 @@ class LoginForm(Form):
         validators=[DataRequired()]
     )
 
-
+class AddProjectForm(Form):
+    project_id=IntegerField()
+    name=StringField('Project Name', validators=[DataRequired()])

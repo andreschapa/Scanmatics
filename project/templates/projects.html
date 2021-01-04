@@ -1,16 +1,16 @@
 {% extends "_base.html" %}
 {% block content %}
 <img src=https://media-exp1.licdn.com/dms/image/C4E0BAQH9ry_VPEPBPw/company-logo_200_200/0/1609696203090?e=1617840000&v=beta&t=zZvbSC0Zr3i8zwrTiRD5o6XwapPBs4lByvXKSOJi6ZA>
-<h1>Welcome to your Scanmatics account.</h1>
+<h1>Projects</h1>
 <a href="{{ url_for('logout') }}">Logout</a>
-<div class="add-customer">
-  <h3>Add a new customer:</h3>
+<div class="add-project">
+  <h3>Add a new project</h3>
   <table>
     <tr>
-      <form action="{{ url_for('new_customer') }}" method="post">
+      <form action="{{ url_for('new_project', project_customer_id=project_customer_id) }}" method="post">
         {{ form.csrf_token }}
         <td>
-          <label>Customer Name:</label>
+          <label>Project Name:</label>
           <input name="name" type="text">
         </td>
         <td>
@@ -22,24 +22,23 @@
     </tr>
   </table>
 </div>
-<div class="customers">
+<div class="projects">
   <br>
   <br>
-  <h2>Customers:</h2>
+  <h2>Projects:</h2>
   <div class="datagrid">
     <table>
       <thead>
         <tr>
-          <th width="300px"><strong>Customer Name</strong></th>
+          <th width="300px"><strong>Project</strong></th>
           <th><strong>Actions</strong></th>
         </tr>
       </thead>
-      {% for customer in customers %}
+      {% for project in projects %}
         <tr>
-          <td width="300px">{{ customer.name }}</td>
+          <td width="300px">{{ project.name }}</td>
           <td>
-            <a href="{{ url_for('delete_customer', customer_id = customer.customer_id) }}">Delete</a>
-            <a href="{{ url_for('projects', customer_id = customer.customer_id) }}">Projects</a> 
+            <a href="{{ url_for('delete_project', project_id = project.project_id) }}">Delete</a>  
           </td>
         </tr>
       {% endfor %}
