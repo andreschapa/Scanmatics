@@ -112,7 +112,7 @@ def register():
 @app.route('/projects/<int:customer_id>') ##return <int: customer_id>
 @login_required
 def projects(customer_id):
-
+    
     projects=db.session.query(Project).filter_by(project_customer_id = customer_id).order_by(Project.name.asc())
     project_customer_id=customer_id
     return render_template(
@@ -126,10 +126,12 @@ def projects(customer_id):
 def delete_project(project_id):
     new_id = project_id
     project=db.session.query(Project).filter_by(project_customer_id=new_id).first()
+    project=Project.query.filter_by(project_id=project_id).first()
+    customer_id=project.project_customer_id
     db.session.query(Project).filter_by(project_id=new_id).delete()
     db.session.commit()
     flash('project has been deleted.')
-    return redirect(url_for('projects'))
+    return redirect(url_for('projects', customer_id=customer_id))
     
 
 
