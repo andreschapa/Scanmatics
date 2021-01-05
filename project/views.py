@@ -79,13 +79,14 @@ def new_customer():
             flash('New customer was successfully added. Thanks.')
     return redirect (url_for('main'))
     
-#delete customer
+#delete customer. Deletes all projects and panels associated with this customer
 @app.route('/delete/<int:customer_id>/') ##<name> is the column 'name' in the customers data base where customers are listed
 @login_required
 def delete_customer(customer_id):
     new_id = customer_id
     db.session.query(Customer).filter_by(customer_id=new_id).delete()
     db.session.query(Project).filter_by(project_customer_id=new_id).delete()
+    db.session.query(Panel).filter_by(panel_project_customer_id=new_id).delete()
     db.session.commit()
     flash('Customer and data has been deleted.')
     return redirect(url_for('main'))
@@ -128,6 +129,7 @@ def delete_project(project_id):
     project=Project.query.filter_by(project_id=project_id).first()
     customer_id=project.project_customer_id
     db.session.query(Project).filter_by(project_id=new_id).delete()
+    db.session.query(Panel).filter_by(panel_project_id=new_id).delete()
     db.session.commit()
     flash('project has been deleted.')
     return redirect(url_for('projects', customer_id=customer_id))
