@@ -7,6 +7,7 @@ class Customer(db.Model):
     name = db.Column(db.String, nullable=False)
     company_id= db.Column(db.String, db.ForeignKey('users.company'))
     projects=db.relationship('Project', backref='customer')
+    panels=db.relationship('Panel', backref='customers') ###Take this one out for multiple foreign key issue.
 
 
     def __init__(self, name, company_id):
@@ -42,6 +43,9 @@ class Project(db.Model):
     project_id=db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False)
     project_customer_id=db.Column(db.Integer, db.ForeignKey('customers.customer_id'))
+    panels=db.relationship('Panel', backref='project')
+    
+
 
     def __init__(self, name, project_customer_id):
         self.name=name
@@ -50,6 +54,25 @@ class Project(db.Model):
     def __repr__(self):
         return '<name {0}>'.format(self.name)
     
+class Panel(db.Model):
+
+    __tablename__='panels'
+    panel_id=db.Column(db.Integer, primary_key=True)
+    name=db.Column(db.String, nullable=False)
+    panel_project_id=db.Column(db.Integer, db.ForeignKey('projects.project_id'))
+    #panel_project_customer_id=db.Column(db.Integer, db.ForeignKey('projects.project_customer_id'))
+    panel_project_customer_id=db.Column(db.Integer, db.ForeignKey('customers.customer_id')) ####
+
+    def __init__(self, name, panel_project_id, panel_project_customer_id):
+        self.name=name
+        self.panel_project_id=panel_project_id
+        self.panel_project_customer_id=panel_project_customer_id
+
+    def __repr__(self):
+        return '<name {0}>'.format(self.name)
+
+
+
 
 
 

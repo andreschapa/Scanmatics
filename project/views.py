@@ -1,5 +1,5 @@
 #views
-from forms import AddCustomerForm, RegisterForm, LoginForm, AddProjectForm
+from forms import AddCustomerForm, RegisterForm, LoginForm, AddProjectForm, AddPanelForm
 
 from functools import wraps
 from flask import Flask, flash, redirect, render_template, \
@@ -12,7 +12,7 @@ app=Flask(__name__)
 app.config.from_object('_config')
 db=SQLAlchemy(app)
 
-from models import Customer, User, Project
+from models import Customer, User, Project, Panel
 
 #helper functions
 
@@ -125,7 +125,6 @@ def projects(customer_id):
 @login_required
 def delete_project(project_id):
     new_id = project_id
-    project=db.session.query(Project).filter_by(project_customer_id=new_id).first()
     project=Project.query.filter_by(project_id=project_id).first()
     customer_id=project.project_customer_id
     db.session.query(Project).filter_by(project_id=new_id).delete()
@@ -152,6 +151,51 @@ def new_project(project_customer_id):
             flash('New project was successfully added. Thanks.')
     return redirect (url_for('projects',customer_id=project_customer_id))
 
+@app.route('/panels/<int:project_id>')
+@login_required
+def panels(project_id):
+    panels=db.session.query(Panel).filter_by(panel_project_id=project_id).order_by(Panel.name.asc())
+    projects=Project.query.filter_by(project_id=project_id).first()
+    panel_project_id=project_id
+    panel_project_customer_id=projects.project_customer_id 
+    return render_template(
+        'panels.html',
+        form=AddPanelForm(request.form),
+        panels=panels,
+        panel_project_id=project_id,
+        panel_project_customer_id=panel_project_customer_id
+    )
 
+@app.route('/addpanel/<int:panel_project_id>', methods=[ 'GET', 'POST'])
+@login_required
+def new_panel(panel_project_id):
+    form=AddProjectForm(request.form)
+    project=Project.query.filter_by(project_id=panel_project_id).first()
+    panel_project_customer_id=project.project_customer_id
+    if request.method=='POST':
+        if form.validate_on_submit():
+            
+            new_panel=Panel(
+                form.name.data,
+                panel_project_id,
+                panel_project_customer_id
+
+            )
+               
+            db.session.add(new_panel)
+            db.session.commit()
+            flash('New panel was successfully added to project. Thanks.')
+    return redirect (url_for('panels',project_id=panel_project_id))
+
+@app.route('/deletepanel/<int:panel_id>/') ##<name> is the column 'name' in the customers data base where customers are listed
+@login_required
+def delete_panel(panel_id):
+    new_id = panel_id
+    panel=Panel.query.filter_by(panel_id=panel_id).first()
+    project_id=panel.panel_project_id
+    db.session.query(Panel).filter_by(panel_id=new_id).delete()
+    db.session.commit()
+    flash('Panel has been deleted.')
+    return redirect(url_for('panels', project_id=project_id))
     
-
+    
