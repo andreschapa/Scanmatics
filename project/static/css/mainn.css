@@ -1,0 +1,14 @@
+body {
+    padding: 60px 0;
+    background-color: rgb(255, 251, 251);
+    }
+    .footer {
+    padding-top: 30px;
+    }
+    .error {
+    color: red;
+    font-size: .8em;
+    }
+    .input-group {
+    margin: 15px 0;
+    }
