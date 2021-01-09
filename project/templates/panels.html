@@ -2,28 +2,23 @@
 {% block content %}
 <img src=https://media-exp1.licdn.com/dms/image/C4E0BAQH9ry_VPEPBPw/company-logo_200_200/0/1609696203090?e=1617840000&v=beta&t=zZvbSC0Zr3i8zwrTiRD5o6XwapPBs4lByvXKSOJi6ZA>
 <h1>Panels</h1>
-<div>
-    <a href="{{ url_for('logout') }}">Logout</a>
-</div>
+
 <div>
     <a href="{{ url_for('projects',customer_id=panel_project_customer_id) }}">Back</a>
 </div>
 
 <div class="add-panel">
   <h3>Add a new panel to the project</h3>
-  <table>
+  <table class="table table-striped">
     <tr>
       <form action="{{ url_for('new_panel', panel_project_id=panel_project_id) }}" method="post">
         {{ form.csrf_token }}
         <td>
           <label>Panel Name:</label>
           <input name="name" type="text">
-        </td>
-        <td>
-          &nbsp;
-          &nbsp;
           <input class="button" type="submit" value="Save">
         </td>
+        
       </form>
     </tr>
   </table>
@@ -33,7 +28,7 @@
   <br>
   <h2>Panels:</h2>
   <div class="datagrid">
-    <table>
+    <table class="table table-striped">
       <thead>
         <tr>
           <th width="300px"><strong>Project</strong></th>
@@ -44,7 +39,10 @@
         <tr>
           <td width="300px">{{ panel.name }}</td>
           <td>
+            
+            <a href="{{ url_for('files', panel_id=panel.panel_id) }}">Documents</a>
             <a href="{{ url_for('delete_panel', panel_id = panel.panel_id) }}">Delete</a>
+            
               
           </td>
         </tr>

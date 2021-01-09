@@ -3,9 +3,19 @@ from forms import AddCustomerForm, RegisterForm, LoginForm, AddProjectForm, AddP
 
 from functools import wraps
 from flask import Flask, flash, redirect, render_template, \
-request, session, url_for
+request, session, url_for, Response
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.exc import IntegrityError
+
+######## 
+import boto3
+from s3config import S3_BUCKET, S3_KEY, S3_SECRET
+s3=boto3.client(
+    's3',
+    aws_access_key_id=S3_KEY,
+    aws_secret_access_key=S3_SECRET
+)
+######## 
 
 #config
 
@@ -78,6 +88,8 @@ def new_customer():
             db.session.add(new_customer)
             db.session.commit()
             flash('New customer was successfully added. Thanks.')
+        else :
+            flash('ERROR Please enter customer name')
     return redirect (url_for('main'))
     
 #delete customer. Deletes all projects and panels associated with this customer
@@ -185,7 +197,7 @@ def new_panel(panel_project_id):
             
             new_panel=Panel(
                 form.name.data,
-                panel_project_id,
+                panel_project_id,  
                 panel_project_customer_id
 
             )
@@ -206,4 +218,67 @@ def delete_panel(panel_id):
     flash('Panel has been deleted.')
     return redirect(url_for('panels', project_id=project_id))
     
-    
+
+##########################
+@app.route('/files/<int:panel_id>/')
+@login_required
+def files(panel_id):
+    #Panels=db.session.query(Panel).filter_by(panel_id=panel_id).order_by(Panel.name.asc())
+    panels=Panel.query.filter_by(panel_id=panel_id).first()
+    project_id=panels.panel_project_id
+    panel_id=panels.panel_id
+   
+    s3_resource=boto3.resource('s3')
+    my_bucket=s3_resource.Bucket(S3_BUCKET)
+    summaries=my_bucket.objects.all()
+
+    return render_template('files.html', my_bucket=my_bucket, files=summaries, project_id=project_id, panel_id=panel_id )
+
+@app.route('/upload/<int:panel_id>/', methods=['POST'])
+def upload(panel_id):
+    file=request.files['file']
+    panels=Panel.query.filter_by(panel_id=panel_id).first()
+    panel_id=panels.panel_id
+
+    s3_resource=boto3.resource('s3')
+    my_bucket=s3_resource.Bucket(S3_BUCKET)
+    my_bucket.Object(file.filename).put(Body=file)
+
+    flash('File uploaded successfully')
+
+    return redirect(url_for('files', panel_id=panel_id))
+
+@app.route('/delete/<int:panel_id>', methods=['POST'])
+def delete(panel_id):
+    key=request.form['key']
+
+    panels=Panel.query.filter_by(panel_id=panel_id).first()
+    panel_id=panels.panel_id
+
+    s3_resource=boto3.resource('s3')
+    my_bucket=s3_resource.Bucket(S3_BUCKET)
+    my_bucket.Object(key).delete()
+
+    flash('File deleted successfully')
+    return redirect(url_for('files', panel_id=panel_id))
+
+@app.route('/download/<int:panel_id>', methods=['POST'])
+def download(panel_id):
+    panels=Panel.query.filter_by(panel_id=panel_id).first()
+    panel_id=panels.panel_id
+
+    key=request.form['key']
+    s3_resource=boto3.resource('s3')
+    my_bucket=s3_resource.Bucket(S3_BUCKET)
+
+    file_obj=my_bucket.Object(key).get()
+
+    return Response(
+        file_obj['Body'].read(),
+        mimetype='text/plain',
+        headers={"Content-Disposition": "attachment;filename={}".format(key)}
+
+    )
+
+
+

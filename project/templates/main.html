@@ -2,7 +2,6 @@
 {% block content %}
 <img src=https://media-exp1.licdn.com/dms/image/C4E0BAQH9ry_VPEPBPw/company-logo_200_200/0/1609696203090?e=1617840000&v=beta&t=zZvbSC0Zr3i8zwrTiRD5o6XwapPBs4lByvXKSOJi6ZA>
 <h1>Welcome to your Scanmatics account.</h1>
-<a href="{{ url_for('logout') }}">Logout</a>
 <div class="add-customer">
   <h3>Add a new customer:</h3>
   <table>
@@ -27,7 +26,7 @@
   <br>
   <h2>Customers:</h2>
   <div class="datagrid">
-    <table>
+    <table class="table table-striped">
       <thead>
         <tr>
           <th width="300px"><strong>Customer Name</strong></th>
@@ -38,8 +37,8 @@
         <tr>
           <td width="300px">{{ customer.name }}</td>
           <td>
-            <a href="{{ url_for('delete_customer', customer_id = customer.customer_id) }}">Delete</a>
-            <a href="{{ url_for('projects', customer_id = customer.customer_id) }}">Projects</a> 
+            <a href="{{ url_for('projects', customer_id = customer.customer_id) }}">Projects</a>
+            <a href="{{ url_for('delete_customer', customer_id = customer.customer_id) }}">Delete</a> 
           </td>
         </tr>
       {% endfor %}

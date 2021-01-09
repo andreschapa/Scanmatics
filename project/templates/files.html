@@ -1,0 +1,55 @@
+{% extends "_base.html" %}
+{% block content %}
+  <div class="container">
+    <div class="row">
+      <div class="col-12-xs">
+        <h3> Panel Documents</h3>
+        <div>
+          
+          <a href="{{ url_for('panels',project_id=project_id) }}">Back</a>
+          
+        </div>
+      
+        &nbsp;
+        &nbsp;
+        <form class="upload-form" action="/upload/{{ panel_id }}/" method="post" enctype="multipart/form-data">
+          <p><input type="file" name="file"></p>
+          <button type="submit" name="Submit" class="btn btn-primary">Upload</button>
+
+        </form>
+        
+        <table class="table table-striped">
+          <tr>
+            <th>Filename</th>
+            <th></th>
+          </tr>
+        {% for f in files %}
+        <tr>
+          <td>{{f.key}}</td>
+          <td>
+            <form class="delete-form" action="{{ url_for('delete', panel_id=panel_id) }}" method ="post">
+              <input type="hidden" name="key" value= "{{ f.key }}">
+              <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+            </form>
+            <br>
+            <form class="download-form" action="{{ url_for('download', panel_id=panel_id) }}" method ="post">
+              <input type="hidden" name="key" value= "{{ f.key }}">
+              <button type="submit" class="btn btn-default btn-sm">Download</button>
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+        </table>
+
+      </div>
+    </div>
+  </div>
+
+
+
+
+     
+   
+       
+
+{% endblock %}

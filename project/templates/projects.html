@@ -2,28 +2,23 @@
 {% block content %}
 <img src=https://media-exp1.licdn.com/dms/image/C4E0BAQH9ry_VPEPBPw/company-logo_200_200/0/1609696203090?e=1617840000&v=beta&t=zZvbSC0Zr3i8zwrTiRD5o6XwapPBs4lByvXKSOJi6ZA>
 <h1>Projects</h1>
-<div>
-    <a href="{{ url_for('logout') }}">Logout</a>
-</div>
+
 <div>
     <a href="{{ url_for('main') }}">Back</a>
 </div>
 
 <div class="add-project">
   <h3>Add a new project</h3>
-  <table>
+  <table class="table table-striped">
     <tr>
       <form action="{{ url_for('new_project', project_customer_id=project_customer_id) }}" method="post">
         {{ form.csrf_token }}
         <td>
           <label>Project Name:</label>
           <input name="name" type="text">
-        </td>
-        <td>
-          &nbsp;
-          &nbsp;
           <input class="button" type="submit" value="Save">
         </td>
+        
       </form>
     </tr>
   </table>
@@ -33,7 +28,7 @@
   <br>
   <h2>Projects:</h2>
   <div class="datagrid">
-    <table>
+    <table class="table table-striped">
       <thead>
         <tr>
           <th width="300px"><strong>Project</strong></th>
@@ -44,8 +39,8 @@
         <tr>
           <td width="300px">{{ project.name }}</td>
           <td>
-            <a href="{{ url_for('delete_project', project_id = project.project_id) }}">Delete</a>
-            <a href="{{ url_for('panels', project_id = project.project_id) }}">Panels</a>   
+            <a href="{{ url_for('panels', project_id = project.project_id) }}">Panels</a>
+            <a href="{{ url_for('delete_project', project_id = project.project_id) }}">Delete</a>   
           </td>
         </tr>
       {% endfor %}
