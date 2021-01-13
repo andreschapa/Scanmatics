@@ -21,7 +21,8 @@ s3=boto3.client(
 #config
 
 app=Flask(__name__)
-app.config.from_object('_config')
+#app.config.from_object('_config')
+app.config.from_pyfile('_config.py') #changed to this from line above
 db=SQLAlchemy(app)
 bcrypt=Bcrypt(app)
 
