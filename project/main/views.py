@@ -23,13 +23,11 @@ s3=boto3.client(
 #app=Flask(__name__)
 ###app.config.from_object('_config') # old one
 
-app = Flask(__name__)
-app.config.from_pyfile('_config.py')
-bcrypt = Bcrypt(app)
-db = SQLAlchemy(app)
 
 
-from .models import Customer, User, Project, Panel
+
+from project.models import Customer, User, Project, Panel
+from project import db, bcrypt
 
 #helper functions
 

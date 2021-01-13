@@ -1,5 +1,5 @@
 ##from views import app original one
-from project.views import app
+from project import app
 import os
 #app.run(debug=True) use this when testing and deploying locally
 
