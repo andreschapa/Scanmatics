@@ -6,6 +6,7 @@ from flask import Flask, flash, redirect, render_template, \
 request, session, url_for, Response
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.exc import IntegrityError
+from flask_bcrypt import Bcrypt
 
 ######## 
 import boto3
@@ -22,6 +23,7 @@ s3=boto3.client(
 app=Flask(__name__)
 app.config.from_object('_config')
 db=SQLAlchemy(app)
+bcrypt=Bcrypt(app)
 
 from models import Customer, User, Project, Panel
 
@@ -54,7 +56,7 @@ def login():
     if request.method== 'POST':
         if form.validate_on_submit():
             user=User.query.filter_by(name=request.form['name']).first()
-            if user is not None and user.password == request.form['password'] and user.company == request.form['company']:
+            if user is not None and bcrypt.check_password_hash(user.password, request.form['password']) and user.company == request.form['company']:
                 session['logged_in']= True
                 session['company_id']=user.company
                 session['name']=user.name
@@ -118,7 +120,7 @@ def register():
             new_user= User(
                 form.name.data,
                 form.email.data,
-                form.password.data,
+                bcrypt.generate_password_hash(form.password.data),
                 form.company.data,
             )
             try:
@@ -138,11 +140,14 @@ def projects(customer_id):
     
     projects=db.session.query(Project).filter_by(project_customer_id = customer_id).order_by(Project.name.asc())
     project_customer_id=customer_id
+    customer=Customer.query.filter_by(customer_id=customer_id).first()
+    customer_name=customer.name
     return render_template(
         'projects.html',
         form=AddProjectForm(request.form),
         projects=projects,
-        project_customer_id=customer_id)
+        project_customer_id=customer_id,
+        customer_name=customer_name)
 
 @app.route('/deleteproject/<int:project_id>/') ##<name> is the column 'name' in the customers data base where customers are listed
 @login_required
@@ -182,12 +187,16 @@ def panels(project_id):
     projects=Project.query.filter_by(project_id=project_id).first()
     panel_project_id=project_id
     panel_project_customer_id=projects.project_customer_id 
+    #code to grab specific panel name to pass to panels.html
+    project_name=projects.name#code to grab specific panel name to pass to panels.html
+
     return render_template(
         'panels.html',
         form=AddPanelForm(request.form),
         panels=panels,
         panel_project_id=project_id,
-        panel_project_customer_id=panel_project_customer_id
+        panel_project_customer_id=panel_project_customer_id,
+        project_name=project_name
     )
 
 @app.route('/addpanel/<int:panel_project_id>', methods=[ 'GET', 'POST'])
@@ -232,6 +241,7 @@ def files(panel_id):
     project_id=panels.panel_project_id
     panel_id=panels.panel_id
     PANEL_ID=str(panel_id)
+    panel_name=panels.name
 
     s3_resource=boto3.resource('s3')
     my_bucket=s3_resource.Bucket(S3_BUCKET)
@@ -240,7 +250,7 @@ def files(panel_id):
     
 
 
-    return render_template('files.html', my_bucket=my_bucket, files=summaries, project_id=project_id, panel_id=panel_id )
+    return render_template('files.html', my_bucket=my_bucket, files=summaries, project_id=project_id, panel_id=panel_id, panel_name=panel_name )
 
 @app.route('/upload/<int:panel_id>/', methods=['POST'])
 def upload(panel_id):
@@ -256,6 +266,7 @@ def upload(panel_id):
     s3_resource=boto3.resource('s3')
     my_bucket=s3_resource.Bucket(S3_BUCKET)
     #my_bucket.Object(file.filename).put(Body=file,Tagging=f'panel_id={PANEL_ID}') ##changed this. added tagging
+    
     my_bucket.Object(file.filename).put(Body=file, Key=key)
 
     flash('File uploaded successfully')
@@ -293,6 +304,5 @@ def download(panel_id):
         headers={"Content-Disposition": "attachment;filename={}".format(key)}
 
     )
-
 
 
