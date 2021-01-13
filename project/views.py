@@ -43,6 +43,7 @@ def login_required(test):
 def logout():
     session.pop('logged_in', None)
     session.pop('company_id', None)
+    session.pop('name', None)
     flash('Adios!')
     return redirect(url_for('login'))
 
@@ -56,6 +57,7 @@ def login():
             if user is not None and user.password == request.form['password'] and user.company == request.form['company']:
                 session['logged_in']= True
                 session['company_id']=user.company
+                session['name']=user.name
                 flash('Welcome!')
                 return redirect(url_for('main'))
             else:
@@ -72,7 +74,9 @@ def main():
     return render_template(
         'main.html',
         form=AddCustomerForm(request.form),
-        customers=customers)
+        customers=customers,
+        username=session['name']
+        )
 
 #add new customer
 @app.route('/addcustomer/', methods=['POST'])
@@ -227,10 +231,14 @@ def files(panel_id):
     panels=Panel.query.filter_by(panel_id=panel_id).first()
     project_id=panels.panel_project_id
     panel_id=panels.panel_id
-   
+    PANEL_ID=str(panel_id)
+
     s3_resource=boto3.resource('s3')
     my_bucket=s3_resource.Bucket(S3_BUCKET)
-    summaries=my_bucket.objects.all()
+    #summaries=my_bucket.objects.all()
+    summaries=my_bucket.objects.filter(Prefix=f'{PANEL_ID}/')
+    
+
 
     return render_template('files.html', my_bucket=my_bucket, files=summaries, project_id=project_id, panel_id=panel_id )
 
@@ -239,10 +247,16 @@ def upload(panel_id):
     file=request.files['file']
     panels=Panel.query.filter_by(panel_id=panel_id).first()
     panel_id=panels.panel_id
+    
+    PANEL_ID=str(panel_id) #added this
+    
+    key= f"{PANEL_ID}/"+file.filename
+
 
     s3_resource=boto3.resource('s3')
     my_bucket=s3_resource.Bucket(S3_BUCKET)
-    my_bucket.Object(file.filename).put(Body=file)
+    #my_bucket.Object(file.filename).put(Body=file,Tagging=f'panel_id={PANEL_ID}') ##changed this. added tagging
+    my_bucket.Object(file.filename).put(Body=file, Key=key)
 
     flash('File uploaded successfully')
 

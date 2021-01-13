@@ -34,6 +34,12 @@
               
             {% endif %}
           </ul>
+          {% if session.logged_in %}
+          <ul class="nav navbar-nav navbar-right">
+            <li><a>Welcome, {{username}}.</a></li>
+            </ul>
+            {% endif %}
+
         </div><!--/.nav-collapse -->
       </div>
     </div>
