@@ -25,7 +25,7 @@ app.config.from_object('_config')
 db=SQLAlchemy(app)
 bcrypt=Bcrypt(app)
 
-from models import Customer, User, Project, Panel
+from .models import Customer, User, Project, Panel
 
 #helper functions
 
