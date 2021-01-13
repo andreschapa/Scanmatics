@@ -1,3 +1,4 @@
+#from views import db
 from views import db
 
 class Customer(db.Model):
