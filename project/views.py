@@ -1,5 +1,5 @@
 #views
-from forms import AddCustomerForm, RegisterForm, LoginForm, AddProjectForm, AddPanelForm
+from .forms import AddCustomerForm, RegisterForm, LoginForm, AddProjectForm, AddPanelForm
 
 from functools import wraps
 from flask import Flask, flash, redirect, render_template, \
@@ -10,7 +10,7 @@ from flask_bcrypt import Bcrypt
 
 ######## 
 import boto3
-from s3config import S3_BUCKET, S3_KEY, S3_SECRET
+from .s3config import S3_BUCKET, S3_KEY, S3_SECRET
 s3=boto3.client(
     's3',
     aws_access_key_id=S3_KEY,
