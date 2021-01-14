@@ -16,14 +16,17 @@ main_blueprint= Blueprint('main', __name__)
 ######## 
 import boto3
 
-from .s3config import S3_BUCKET, S3_KEY, S3_SECRET
+#from .s3config import S3_BUCKET, S3_KEY, S3_SECRET
 
 s3=boto3.client(
     's3',
     aws_access_key_id=S3_KEY,
     aws_secret_access_key=S3_SECRET
 )
-######## 
+
+aws_session = boto3.Session(profile_name="scanmatics")
+s3 = aws_session.client('s3')
+
 
 
 
