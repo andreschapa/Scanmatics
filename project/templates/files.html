@@ -6,7 +6,7 @@
         <h3>{{ panel_name }} Panel Documents</h3>
         <div>
           
-          <a href="{{ url_for('panels',project_id=project_id) }}">Back</a>
+          <a href="{{ url_for('main.panels',project_id=project_id) }}">Back</a>
           
         </div>
       
@@ -27,12 +27,12 @@
         <tr>
           <td>{{f.key}}</td>
           <td>
-            <form class="delete-form" action="{{ url_for('delete', panel_id=panel_id) }}" method ="post">
+            <form class="delete-form" action="{{ url_for('main.delete', panel_id=panel_id) }}" method ="post">
               <input type="hidden" name="key" value= "{{ f.key }}">
               <button type="submit" class="btn btn-danger btn-sm">Delete</button>
             </form>
             <br>
-            <form class="download-form" action="{{ url_for('download', panel_id=panel_id) }}" method ="post">
+            <form class="download-form" action="{{ url_for('main.download', panel_id=panel_id) }}" method ="post">
               <input type="hidden" name="key" value= "{{ f.key }}">
               <button type="submit" class="btn btn-default btn-sm">Download</button>
             </form>

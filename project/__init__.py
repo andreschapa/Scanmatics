@@ -11,3 +11,6 @@ app = Flask(__name__)
 app.config.from_pyfile('_config.py')
 bcrypt = Bcrypt(app)
 db = SQLAlchemy(app)
+
+from project.main.views import main_blueprint
+app.register_blueprint(main_blueprint)

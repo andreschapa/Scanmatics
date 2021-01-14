@@ -4,14 +4,14 @@
 <h1>{{ project_name }} Panels</h1>
 
 <div>
-    <a href="{{ url_for('projects',customer_id=panel_project_customer_id) }}">Back</a>
+    <a href="{{ url_for('main.projects',customer_id=panel_project_customer_id) }}">Back</a>
 </div>
 
 <div class="add-panel">
   <h3>Add a new panel to the project</h3>
   <table class="table table-striped">
     <tr>
-      <form action="{{ url_for('new_panel', panel_project_id=panel_project_id) }}" method="post">
+      <form action="{{ url_for('main.new_panel', panel_project_id=panel_project_id) }}" method="post">
         {{ form.csrf_token }}
         <td>
           <label>Panel Name:</label>
@@ -40,8 +40,8 @@
           <td width="300px">{{ panel.name }}</td>
           <td>
             
-            <a href="{{ url_for('files', panel_id=panel.panel_id) }}">Documents</a>
-            <a href="{{ url_for('delete_panel', panel_id = panel.panel_id) }}">Delete</a>
+            <a href="{{ url_for('main.files', panel_id=panel.panel_id) }}">Documents</a>
+            <a href="{{ url_for('main.delete_panel', panel_id = panel.panel_id) }}">Delete</a>
             
               
           </td>

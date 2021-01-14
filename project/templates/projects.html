@@ -4,14 +4,14 @@
 <h1>{{ customer_name }} Projects</h1>
 
 <div>
-    <a href="{{ url_for('main') }}">Back</a>
+    <a href="{{ url_for('main.main') }}">Back</a>
 </div>
 
 <div class="add-project">
   <h3>Add a new project</h3>
   <table class="table table-striped">
     <tr>
-      <form action="{{ url_for('new_project', project_customer_id=project_customer_id) }}" method="post">
+      <form action="{{ url_for('main.new_project', project_customer_id=project_customer_id) }}" method="post">
         {{ form.csrf_token }}
         <td>
           <label>Project Name:</label>
@@ -39,8 +39,8 @@
         <tr>
           <td width="300px">{{ project.name }}</td>
           <td>
-            <a href="{{ url_for('panels', project_id = project.project_id) }}">Panels</a>
-            <a href="{{ url_for('delete_project', project_id = project.project_id) }}">Delete</a>   
+            <a href="{{ url_for('main.panels', project_id = project.project_id) }}">Panels</a>
+            <a href="{{ url_for('main.delete_project', project_id = project.project_id) }}">Delete</a>   
           </td>
         </tr>
       {% endfor %}

@@ -6,7 +6,7 @@
   <h3>Add a new customer:</h3>
   <table>
     <tr>
-      <form action="{{ url_for('new_customer') }}" method="post">
+      <form action="{{ url_for('main.new_customer') }}" method="post">
         {{ form.csrf_token }}
         <td>
           <label>Customer Name:</label>
@@ -37,8 +37,8 @@
         <tr>
           <td width="300px">{{ customer.name }}</td>
           <td>
-            <a href="{{ url_for('projects', customer_id = customer.customer_id) }}">Projects</a>
-            <a href="{{ url_for('delete_customer', customer_id = customer.customer_id) }}">Delete</a> 
+            <a href="{{ url_for('main.projects', customer_id = customer.customer_id) }}">Projects</a>
+            <a href="{{ url_for('main.delete_customer', customer_id = customer.customer_id) }}">Delete</a> 
           </td>
         </tr>
       {% endfor %}

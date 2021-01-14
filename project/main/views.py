@@ -1,16 +1,16 @@
 #views
-from forms import AddCustomerForm, RegisterForm, LoginForm, AddProjectForm, AddPanelForm
+from .forms import AddCustomerForm, RegisterForm, LoginForm, AddProjectForm, AddPanelForm
 
 from functools import wraps
 from flask import Flask, flash, redirect, render_template, \
-request, session, url_for, Response
-from flask_sqlalchemy import SQLAlchemy
+request, session, url_for, Response, Blueprint
+#from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.exc import IntegrityError
-from flask_bcrypt import Bcrypt
+#from flask_bcrypt import Bcrypt
 
 ######## 
 import boto3
-from s3config import S3_BUCKET, S3_KEY, S3_SECRET
+from .s3config import S3_BUCKET, S3_KEY, S3_SECRET
 s3=boto3.client(
     's3',
     aws_access_key_id=S3_KEY,
@@ -24,10 +24,9 @@ s3=boto3.client(
 ###app.config.from_object('_config') # old one
 
 
-
-
 from project.models import Customer, User, Project, Panel
 from project import db, bcrypt
+main_blueprint= Blueprint('main', __name__)
 
 #helper functions
 
@@ -38,20 +37,20 @@ def login_required(test):
             return test(*args, **kwargs)
         else:
             flash('You need to login first.')
-            return redirect(url_for('login'))
+            return redirect(url_for('main.login'))
     return wrap
 
 #route handlers
 
-@app.route('/logout/')
+@main_blueprint.route('/logout/')
 def logout():
     session.pop('logged_in', None)
     session.pop('company_id', None)
     session.pop('name', None)
     flash('Adios!')
-    return redirect(url_for('login'))
+    return redirect(url_for('main.login'))
 
-@app.route('/', methods=['GET', 'POST'])
+@main_blueprint.route('/', methods=['GET', 'POST'])
 def login():
     error=None
     form= LoginForm(request.form)
@@ -63,7 +62,7 @@ def login():
                 session['company_id']=user.company
                 session['name']=user.name
                 flash('Welcome!')
-                return redirect(url_for('main'))
+                return redirect(url_for('main.main'))
             else:
                 error= 'Invalid username, company name, or password.'
         else:
@@ -71,7 +70,7 @@ def login():
     return render_template('login.html', form=form, error=error)
        
 
-@app.route('/main/')
+@main_blueprint.route('/main/')
 @login_required
 def main():
     customers=db.session.query(Customer).filter_by(company_id = session['company_id']).order_by(Customer.name.asc())
@@ -83,7 +82,7 @@ def main():
         )
 
 #add new customer
-@app.route('/addcustomer/', methods=['POST'])
+@main_blueprint.route('/addcustomer/', methods=['POST'])
 @login_required
 def new_customer():
     form=AddCustomerForm(request.form)
@@ -98,10 +97,10 @@ def new_customer():
             flash('New customer was successfully added. Thanks.')
         else :
             flash('ERROR Please enter customer name')
-    return redirect (url_for('main'))
+    return redirect (url_for('main.main'))
     
 #delete customer. Deletes all projects and panels associated with this customer
-@app.route('/delete/<int:customer_id>/') ##<name> is the column 'name' in the customers data base where customers are listed
+@main_blueprint.route('/delete/<int:customer_id>/') ##<name> is the column 'name' in the customers data base where customers are listed
 @login_required
 def delete_customer(customer_id):
     new_id = customer_id
@@ -110,10 +109,10 @@ def delete_customer(customer_id):
     db.session.query(Panel).filter_by(panel_project_customer_id=new_id).delete()
     db.session.commit()
     flash('Customer and data has been deleted.')
-    return redirect(url_for('main'))
+    return redirect(url_for('main.main'))
 
 #register customer
-@app.route('/register/', methods=['GET', 'POST'])
+@main_blueprint.route('/register/', methods=['GET', 'POST'])
 def register():
     error=None
     form=RegisterForm(request.form)
@@ -129,14 +128,14 @@ def register():
                 db.session.add(new_user)
                 db.session.commit()
                 flash('Thanks for registering. Please login.')
-                return redirect(url_for('login'))
+                return redirect(url_for('main.login'))
             except IntegrityError:
                 error= 'That username and/or email already exists.'
                 return render_template('register.html', form=form, error=error)
     return render_template('register.html', form=form, error=error)
     
 
-@app.route('/projects/<int:customer_id>') ##return <int: customer_id>
+@main_blueprint.route('/projects/<int:customer_id>') ##return <int: customer_id>
 @login_required
 def projects(customer_id):
     
@@ -151,7 +150,7 @@ def projects(customer_id):
         project_customer_id=customer_id,
         customer_name=customer_name)
 
-@app.route('/deleteproject/<int:project_id>/') ##<name> is the column 'name' in the customers data base where customers are listed
+@main_blueprint.route('/deleteproject/<int:project_id>/') ##<name> is the column 'name' in the customers data base where customers are listed
 @login_required
 def delete_project(project_id):
     new_id = project_id
@@ -161,11 +160,11 @@ def delete_project(project_id):
     db.session.query(Panel).filter_by(panel_project_id=new_id).delete()
     db.session.commit()
     flash('project has been deleted.')
-    return redirect(url_for('projects', customer_id=customer_id))
+    return redirect(url_for('main.projects', customer_id=customer_id))
     
 
 
-@app.route('/addproject/<int:project_customer_id>', methods=[ 'GET', 'POST'])
+@main_blueprint.route('/addproject/<int:project_customer_id>', methods=[ 'GET', 'POST'])
 @login_required
 def new_project(project_customer_id):
     form=AddProjectForm(request.form)
@@ -180,9 +179,9 @@ def new_project(project_customer_id):
             db.session.add(new_project)
             db.session.commit()
             flash('New project was successfully added. Thanks.')
-    return redirect (url_for('projects',customer_id=project_customer_id))
+    return redirect (url_for('main.projects',customer_id=project_customer_id))
 
-@app.route('/panels/<int:project_id>')
+@main_blueprint.route('/panels/<int:project_id>')
 @login_required
 def panels(project_id):
     panels=db.session.query(Panel).filter_by(panel_project_id=project_id).order_by(Panel.name.asc())
@@ -201,7 +200,7 @@ def panels(project_id):
         project_name=project_name
     )
 
-@app.route('/addpanel/<int:panel_project_id>', methods=[ 'GET', 'POST'])
+@main_blueprint.route('/addpanel/<int:panel_project_id>', methods=[ 'GET', 'POST'])
 @login_required
 def new_panel(panel_project_id):
     form=AddProjectForm(request.form)
@@ -220,9 +219,9 @@ def new_panel(panel_project_id):
             db.session.add(new_panel)
             db.session.commit()
             flash('New panel was successfully added to project. Thanks.')
-    return redirect (url_for('panels',project_id=panel_project_id))
+    return redirect (url_for('main.panels',project_id=panel_project_id))
 
-@app.route('/deletepanel/<int:panel_id>/') ##<name> is the column 'name' in the customers data base where customers are listed
+@main_blueprint.route('/deletepanel/<int:panel_id>/') ##<name> is the column 'name' in the customers data base where customers are listed
 @login_required
 def delete_panel(panel_id):
     new_id = panel_id
@@ -231,11 +230,11 @@ def delete_panel(panel_id):
     db.session.query(Panel).filter_by(panel_id=new_id).delete()
     db.session.commit()
     flash('Panel has been deleted.')
-    return redirect(url_for('panels', project_id=project_id))
+    return redirect(url_for('main.panels', project_id=project_id))
     
 
 ##########################
-@app.route('/files/<int:panel_id>/')
+@main_blueprint.route('/files/<int:panel_id>/')
 @login_required
 def files(panel_id):
     #Panels=db.session.query(Panel).filter_by(panel_id=panel_id).order_by(Panel.name.asc())
@@ -254,7 +253,7 @@ def files(panel_id):
 
     return render_template('files.html', my_bucket=my_bucket, files=summaries, project_id=project_id, panel_id=panel_id, panel_name=panel_name )
 
-@app.route('/upload/<int:panel_id>/', methods=['POST'])
+@main_blueprint.route('/upload/<int:panel_id>/', methods=['POST'])
 def upload(panel_id):
     file=request.files['file']
     panels=Panel.query.filter_by(panel_id=panel_id).first()
@@ -273,9 +272,9 @@ def upload(panel_id):
 
     flash('File uploaded successfully')
 
-    return redirect(url_for('files', panel_id=panel_id))
+    return redirect(url_for('main.files', panel_id=panel_id))
 
-@app.route('/delete/<int:panel_id>', methods=['POST'])
+@main_blueprint.route('/delete/<int:panel_id>', methods=['POST'])
 def delete(panel_id):
     key=request.form['key']
 
@@ -287,9 +286,9 @@ def delete(panel_id):
     my_bucket.Object(key).delete()
 
     flash('File deleted successfully')
-    return redirect(url_for('files', panel_id=panel_id))
+    return redirect(url_for('main.files', panel_id=panel_id))
 
-@app.route('/download/<int:panel_id>', methods=['POST'])
+@main_blueprint.route('/download/<int:panel_id>', methods=['POST'])
 def download(panel_id):
     panels=Panel.query.filter_by(panel_id=panel_id).first()
     panel_id=panels.panel_id
