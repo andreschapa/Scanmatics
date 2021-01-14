@@ -8,6 +8,11 @@ request, session, url_for, Response, Blueprint
 from sqlalchemy.exc import IntegrityError
 #from flask_bcrypt import Bcrypt
 
+from project.models import Customer, User, Project, Panel
+from project import db, bcrypt
+main_blueprint= Blueprint('main', __name__)
+
+
 ######## 
 import boto3
 from .s3config import S3_BUCKET, S3_KEY, S3_SECRET
@@ -18,15 +23,7 @@ s3=boto3.client(
 )
 ######## 
 
-#config
 
-#app=Flask(__name__)
-###app.config.from_object('_config') # old one
-
-
-from project.models import Customer, User, Project, Panel
-from project import db, bcrypt
-main_blueprint= Blueprint('main', __name__)
 
 #helper functions
 
