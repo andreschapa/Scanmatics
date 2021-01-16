@@ -1,8 +1,8 @@
-from views import db
-from models import Customer
+from project import db
+
 
 db.create_all()
 
 #db.session.add(Customer("Scanmatics"))
 
-db.session.commit()
+#db.session.commit()
