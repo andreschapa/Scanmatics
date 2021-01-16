@@ -27,7 +27,7 @@ class User(db.Model):
     name = db.Column(db.String, unique=True, nullable=False)
     email = db.Column(db.String, unique=True, nullable=False)
     password = db.Column(db.String, nullable=False)
-    company = db.Column(db.String, nullable=False)
+    company = db.Column(db.String, nullable=False, unique=True)
     customers=db.relationship('Customer', backref='poster')
 
     def __init__(self, name=None, email=None, password=None, company=None):
