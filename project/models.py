@@ -28,7 +28,7 @@ class User(db.Model):
     name = db.Column(db.String, unique=True, nullable=False)
     email = db.Column(db.String, unique=True, nullable=False)
     password = db.Column(db.String, nullable=False,)
-    company = db.Column(db.String, nullable=False, primary_key=True, unique=True) ##added primary_key to true, and unique=true to this 1/16/2020
+    company = db.Column(db.String, nullable=False, primary_key=True) ##added primary_key to true, and unique=true to this 1/16/2020
     customers=db.relationship('Customer', backref='poster')
     
     
