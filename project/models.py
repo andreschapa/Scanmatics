@@ -10,7 +10,7 @@ class User(db.Model):
     name = db.Column(db.String, unique=True, nullable=False)
     email = db.Column(db.String, unique=True, nullable=False)
     password = db.Column(db.String, nullable=False,)
-    company = db.Column(db.String, nullable=False, unique=True) ##added primary_key to true, and unique=true to this 1/16/2020
+    company = db.Column(db.String, nullable=False, primary_key=True) ##added primary_key to true, and unique=true to this 1/16/2020
     customers=db.relationship('Customer', backref='poster')
     
     
@@ -30,6 +30,7 @@ class User(db.Model):
 class Customer(db.Model):
 
     __tablename__="customers"
+    __table_args__ = (db.UniqueConstraint('company',name='users'),) ## might need to remove this
     customer_id =db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False)
     company_id= db.Column(db.String, db.ForeignKey('users.company'), unique=True)
