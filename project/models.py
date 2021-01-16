@@ -30,7 +30,7 @@ class User(db.Model):
 class Customer(db.Model):
 
     __tablename__="customers"
-    __table_args__ = (db.UniqueConstraint('company',name='users'),) ## might need to remove this
+    #__table_args__ = (db.UniqueConstraint('company',name='users'),) ## might need to remove this
     customer_id =db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False)
     company_id= db.Column(db.String, db.ForeignKey('users.company'), unique=True)
