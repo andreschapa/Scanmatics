@@ -12,6 +12,7 @@ class Customer(db.Model):
     panels=db.relationship('Panel', backref='customers') ###Take this one out for multiple foreign key issue.
 
 
+
     def __init__(self, name, company_id):
         self.name=name
         self.company_id= company_id
@@ -27,8 +28,9 @@ class User(db.Model):
     name = db.Column(db.String, unique=True, nullable=False)
     email = db.Column(db.String, unique=True, nullable=False)
     password = db.Column(db.String, nullable=False)
-    company = db.Column(db.String, nullable=False, unique=True)
+    company = db.Column(db.String, nullable=False, primary_key=True) ##added primary_key to true to this 1/16/2020
     customers=db.relationship('Customer', backref='poster')
+    
 
     def __init__(self, name=None, email=None, password=None, company=None):
         self.name= name
