@@ -2,6 +2,31 @@
 from project import db
 import datetime
 
+class User(db.Model):
+
+    __tablename__='users'
+    #__table_args__ = (db.UniqueConstraint('company',name='users'),) ##added this line 
+    id = db.Column(db.Integer, primary_key=True, unique=True)
+    name = db.Column(db.String, unique=True, nullable=False)
+    email = db.Column(db.String, unique=True, nullable=False)
+    password = db.Column(db.String, nullable=False,)
+    company = db.Column(db.String, nullable=False, primary_key=True) ##added primary_key to true, and unique=true to this 1/16/2020
+    customers=db.relationship('Customer', backref='poster')
+    
+    
+
+    def __init__(self, name=None, email=None, password=None, company=None):
+        self.name= name
+        self.email=email
+        self.password=password
+        self.company= company
+
+    def __repr__(self):
+        return '<User {0}>'.format(self.name) ##might need to come back and also return company name
+
+
+
+
 class Customer(db.Model):
 
     __tablename__="customers"
@@ -20,27 +45,6 @@ class Customer(db.Model):
     def __repr__(self):
         return '<name {0}>'.format(self.name)
 
-class User(db.Model):
-
-    __tablename__='users'
-    __table_args__ = (db.UniqueConstraint('company',name='users'),) ##added this line 
-    id = db.Column(db.Integer, primary_key=True, unique=True)
-    name = db.Column(db.String, unique=True, nullable=False)
-    email = db.Column(db.String, unique=True, nullable=False)
-    password = db.Column(db.String, nullable=False,)
-    company = db.Column(db.String, nullable=False, primary_key=True) ##added primary_key to true, and unique=true to this 1/16/2020
-    customers=db.relationship('Customer', backref='poster')
-    
-    
-
-    def __init__(self, name=None, email=None, password=None, company=None):
-        self.name= name
-        self.email=email
-        self.password=password
-        self.company= company
-
-    def __repr__(self):
-        return '<User {0}>'.format(self.name) ##might need to come back and also return company name
 
 class Project(db.Model):
 
