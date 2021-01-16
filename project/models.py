@@ -23,7 +23,7 @@ class Customer(db.Model):
 class User(db.Model):
 
     __tablename__='users'
-    __table_args__ = (db.UniqueConstraint('company')) ##added this line 
+    __table_args__ = (db.UniqueConstraint('company'),) ##added this line 
     id = db.Column(db.Integer, primary_key=True, unique=True)
     name = db.Column(db.String, unique=True, nullable=False)
     email = db.Column(db.String, unique=True, nullable=False)
