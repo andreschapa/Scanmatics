@@ -241,7 +241,7 @@ def delete_panel(panel_id):
 
 ##########################
 @main_blueprint.route('/files/<int:panel_id>/')
-#@login_required
+@login_required
 def files(panel_id):
     #Panels=db.session.query(Panel).filter_by(panel_id=panel_id).order_by(Panel.name.asc())
     panels=Panel.query.filter_by(panel_id=panel_id).first()
