@@ -31,6 +31,17 @@ s3=boto3.client('s3')
 
 ############# QR CODE SHIT WILL MOVE THIS TO THE BOTTOM ONCE DONE WITH DEVELOPMENT##################
 
+@main.blueprint.route('/QRmain/<int:QR_id>')
+def QRmain(QR_id):
+
+    QR_id=QR_id
+    return render_template('QR_register.html', QR_id=QR_id)
+    
+
+
+
+
+
 def login_required(test):
     @wraps(test)
     def wrap(*args, **kwargs):
