@@ -13,15 +13,14 @@ from project import db, bcrypt
 main_blueprint= Blueprint('main', __name__)
 
 
-######## 
 import boto3
 import os
 
 S3_BUCKET=os.environ.get('S3_BUCKET')
 s3=boto3.client('s3')
 
+#S# for configuring locally
 #from .s3config import S3_BUCKET, S3_KEY, S3_SECRET
-
 #s3=boto3.client(
     #'s3',
     #aws_access_key_id=S3_KEY,
@@ -30,11 +29,7 @@ s3=boto3.client('s3')
 
 
 
-
-
-
-
-#helper functions
+############# QR CODE SHIT WILL MOVE THIS TO THE BOTTOM ONCE DONE WITH DEVELOPMENT##################
 
 def login_required(test):
     @wraps(test)
