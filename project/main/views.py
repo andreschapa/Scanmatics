@@ -31,7 +31,7 @@ s3=boto3.client('s3')
 
 ############# QR CODE SHIT WILL MOVE THIS TO THE BOTTOM ONCE DONE WITH DEVELOPMENT##################
 
-@main.blueprint.route('/QRmain/<int:QR_id>')
+@main_blueprint.route('/QRmain/<int:QR_id>')
 def QRmain(QR_id):
 
     QR_id=QR_id
