@@ -8,7 +8,7 @@ request, session, url_for, Response, Blueprint
 from sqlalchemy.exc import IntegrityError
 #from flask_bcrypt import Bcrypt
 
-from project.models import Customer, User, Project, Panel
+from project.models import Customer, User, Project, Panel, QRcode
 from project import db, bcrypt
 main_blueprint= Blueprint('main', __name__)
 
