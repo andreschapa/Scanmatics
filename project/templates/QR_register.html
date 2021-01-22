@@ -1,6 +1,28 @@
 {% extends "_base.html" %}
 {% block content %}
 
-<h1>{{QR_id}}</h1>
+<img src=https://media-exp1.licdn.com/dms/image/C4E0BAQH9ry_VPEPBPw/company-logo_200_200/0/1609696203090?e=1617840000&v=beta&t=zZvbSC0Zr3i8zwrTiRD5o6XwapPBs4lByvXKSOJi6ZA>
+<h1>Welcome to Scanmatics. Please register QR code here to link your data.</h1>
+<form method="POST" action="">
+  {{ form.csrf_token }}
+  <div>
+    {{ form.panel_id.label }}
+    {{ form.panel_id }}
+  </div>
+  <div>
+    {{ form.panel_project_customer_id.label }}
+    {{ form.panel_project_customer_id}}
+  </div>
+  <div>
+    {{ form.panel_name.label }}
+    {{ form.panel_name}}
+  </div>
+
+  <div>
+    <input type="submit" value="Register QR code"></p>
+  </div>
+</form>
+
+  <br>
 
 {% endblock %}

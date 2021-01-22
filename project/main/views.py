@@ -30,13 +30,64 @@ s3=boto3.client('s3')
 
 
 ############# QR CODE SHIT WILL MOVE THIS TO THE BOTTOM ONCE DONE WITH DEVELOPMENT##################
-
+#register QR code
 @main_blueprint.route('/QRmain/<int:QR_id>')
 def QRmain(QR_id):
-
+    QR_id=QR_id
+    error=None
+    form=RegisterQRForm(request.form)
+    if request.method== 'POST':
+        if form.validate_on_submit():
+            new_QR= QRcode(
+                form.panel_id.data,
+                form.panel_project_customer_id.data,
+                form.panel_name.data,
+                QR_id
+            )
+            try:
+                db.session.add(new_QR)
+                db.session.commit()
+                flash('Thanks for registering QR code.')
+                return redirect(url_for('main.login'))
+            except IntegrityError:
+                error= 'That panel ID has already been linked to a QR code.'
+                return render_template('QR_register.html', form=form, error=error)
+    return render_template('QR_register.html', form=form, error=error)
     QR_id=QR_id
     return render_template('QR_register.html', QR_id=QR_id)
     
+#register customer
+@main_blueprint.route('/register/', methods=['GET', 'POST'])
+def register():
+    error=None
+    form=RegisterForm(request.form)
+    if request.method== 'POST':
+        if form.validate_on_submit():
+            new_user= User(
+                form.name.data,
+                form.email.data,
+                bcrypt.generate_password_hash(form.password.data).decode('utf-8'),####### added.decode(utf-8)
+                form.company.data,
+            )
+            try:
+                db.session.add(new_user)
+                db.session.commit()
+                flash('Thanks for registering. Please login.')
+                return redirect(url_for('main.login'))
+            except IntegrityError:
+                error= 'That username and/or email already exists.'
+                return render_template('register.html', form=form, error=error)
+    return render_template('register.html', form=form, error=error)
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -123,29 +174,6 @@ def delete_customer(customer_id):
     flash('Customer and data has been deleted.')
     return redirect(url_for('main.main'))
 
-#register customer
-@main_blueprint.route('/register/', methods=['GET', 'POST'])
-def register():
-    error=None
-    form=RegisterForm(request.form)
-    if request.method== 'POST':
-        if form.validate_on_submit():
-            new_user= User(
-                form.name.data,
-                form.email.data,
-                bcrypt.generate_password_hash(form.password.data).decode('utf-8'),####### added.decode(utf-8)
-                form.company.data,
-            )
-            try:
-                db.session.add(new_user)
-                db.session.commit()
-                flash('Thanks for registering. Please login.')
-                return redirect(url_for('main.login'))
-            except IntegrityError:
-                error= 'That username and/or email already exists.'
-                return render_template('register.html', form=form, error=error)
-    return render_template('register.html', form=form, error=error)
-    
 
 @main_blueprint.route('/projects/<int:customer_id>') ##return <int: customer_id>
 @login_required

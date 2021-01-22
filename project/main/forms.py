@@ -2,6 +2,14 @@ from flask_wtf import Form
 from wtforms import StringField, DateField, IntegerField, SelectField, PasswordField
 from wtforms.validators import DataRequired, Length, EqualTo, Email
 
+class RegisterQRForm(Form):
+
+    panel_id=IntegerField('Panel ID', validators=[DataRequired()])
+    panel_project_customer_id=IntegerField('Panel Project Customer ID', validators=[DataRequired()])
+    panel_name=StringField('Panel Name', validators=[DataRequired()])
+
+
+
 class AddCustomerForm(Form):
     customer_id=IntegerField()
     name=StringField('Customer Name', validators=[DataRequired()])
@@ -48,4 +56,7 @@ class AddProjectForm(Form):
 class AddPanelForm(Form):
     panel_id=IntegerField()
     name=StringField('Panel Name', validators=[DataRequired()])
+
+#class AddQRForm(Form):
+
     

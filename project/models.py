@@ -62,7 +62,7 @@ class Panel(db.Model):
     name=db.Column(db.String, nullable=False)
     panel_project_id=db.Column(db.Integer, db.ForeignKey('projects.project_id'))
     panel_project_customer_id=db.Column(db.Integer, db.ForeignKey('customers.customer_id'))
-    #QRcodes=db.relationship('QRcode', backref='qrcode') #added 1/20
+    
 
     def __init__(self, name, panel_project_id, panel_project_customer_id):
         self.name=name
@@ -72,24 +72,25 @@ class Panel(db.Model):
     def __repr__(self):
         return '<name {0}>'.format(self.name)
 #added 1/20
-#class QRcode(db.Model):
-  #  __tablename__='QRcodes'
-  #  QR_id=db.Column(db.Integer, unique=True)
-  #  QR_panel_id=db.Column(db.Integer, db.ForeignKey('panels.panel_id'))
-  #  end_user=db.Column(db.string, nullable=False)
-  #  creator=db.Column(db.string, nullable=False)
+class QRcode(db.Model):
+    __tablename__='QRcodes'
+    panel_id=db.Column(db.Integer, unique=True)
+    panel_project_customer_id=db.Column(db.Integer, nullable=False)
+    panel_name=db.Column(db.String, nullable=False)
+    QR_id=db.Column(db.Integer, unique=True)
 
-  #  def __init__(self, QR_id, QR_panel_id, end_user):
-  #      self.QR_id=QR_id
-  #      self.QR_panel_id=QR_panel_id
-  #      self.end_user=end_user
-  #      self.creator=db.Column(db.string, nullable=False)
+    def __init__(self, panel_id, panel_project_customer_id, panel_name, QR_id):
+        self.panel_id=panel_id
+        self.panel_project_customer_id=panel_project_customer_id
+        self.panel_name=panel_name
+        self.QR_id=QR_id
+       
     
-  #  def __repr__(self):
-  #      return '<name {0}>'.format(self.name)
+    def __repr__(self):
+        return '<name {0}>'.format(self.name)
     
 
 
-
+  
 
 
