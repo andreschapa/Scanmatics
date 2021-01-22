@@ -1,5 +1,5 @@
 #views
-from .forms import AddCustomerForm, RegisterForm, LoginForm, AddProjectForm, AddPanelForm
+from .forms import AddCustomerForm, RegisterForm, LoginForm, AddProjectForm, AddPanelForm,RegisterQRForm
 
 from functools import wraps
 from flask import Flask, flash, redirect, render_template, \
