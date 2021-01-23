@@ -42,7 +42,8 @@ def QRmain(QR_id):
 
     if request.method== 'POST':
         if form.validate_on_submit():
-            panel=Panel.query.filter_by(form.panel_id.data[0]).first()
+            PID=request.form.get('Panel ID')
+            panel=Panel.query.filter_by(PID).first()
             ##need to add code here that checks match of form data to 
             if panel.panel_id is None:
 
