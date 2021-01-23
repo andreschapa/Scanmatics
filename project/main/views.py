@@ -36,12 +36,12 @@ def QRmain(QR_id):
 
     qrcode=QRcode.query.filter_by(QR_id=QR_id).first()
     if qrcode is not None :
-        return redirect(url_for('main.login'))
-
-
+        panel_id=qrcode.panel_id #pulling panel ID from QRcode model
+        return redirect(url_for('main.QRfiles',panel_id=panel_id))
 
     if request.method== 'POST':
         if form.validate_on_submit():
+            ##need to add code here that checks match of form data to 
             new_QR= QRcode(
                 form.panel_id.data,
                 form.panel_project_customer_id.data,
@@ -57,8 +57,26 @@ def QRmain(QR_id):
                 error= 'That panel ID has already been linked to a QR code.'
                 return render_template('QR_register.html', form=form, error=error)
     return render_template('QR_register.html', form=form, error=error)
+
+
+
+###
+@main_blueprint.route('/QRfiles/<int:panel_id>/')
+def QRfiles(panel_id):
+    #Panels=db.session.query(Panel).filter_by(panel_id=panel_id).order_by(Panel.name.asc())
+    panels=Panel.query.filter_by(panel_id=panel_id).first()
+    project_id=panels.panel_project_id
+    panel_id=panels.panel_id
+    PANEL_ID=str(panel_id)
+    panel_name=panels.name
+
+    s3_resource=boto3.resource('s3')
+    my_bucket=s3_resource.Bucket(S3_BUCKET)
+    #summaries=my_bucket.objects.all()
+    summaries=my_bucket.objects.filter(Prefix=f'{PANEL_ID}/')
     
-    
+    return render_template('files.html', my_bucket=my_bucket, files=summaries, project_id=project_id, panel_id=panel_id, panel_name=panel_name )
+ ####   
 
 
 
@@ -290,8 +308,6 @@ def files(panel_id):
     #summaries=my_bucket.objects.all()
     summaries=my_bucket.objects.filter(Prefix=f'{PANEL_ID}/')
     
-
-
     return render_template('files.html', my_bucket=my_bucket, files=summaries, project_id=project_id, panel_id=panel_id, panel_name=panel_name )
 
 @main_blueprint.route('/upload/<int:panel_id>/', methods=['POST'])
