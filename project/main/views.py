@@ -35,7 +35,7 @@ def QRmain(QR_id):
     form=RegisterQRForm(request.form)
 
     qrcode=QRcode.query.filter_by(QR_id=QR_id).first()
-    if qrcode is None :
+    if qrcode is not None :
         return redirect(url_for('main.login'))
 
 
@@ -59,7 +59,6 @@ def QRmain(QR_id):
     return render_template('QR_register.html', form=form, error=error)
     
     
-
 
 
 
