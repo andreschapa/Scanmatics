@@ -33,8 +33,11 @@ def QRmain(QR_id):
     QR_id=QR_id
     error=None
     form=RegisterQRForm(request.form)
-    #Add if statement to check the QR_id has been linked or not
-    #if it's been linked, redirect to QR view login if
+
+    qrcode=QRcode.query.filter_by(QR_id=QR_id).first()
+    
+
+
     if request.method== 'POST':
         if form.validate_on_submit():
             new_QR= QRcode(
@@ -54,6 +57,13 @@ def QRmain(QR_id):
     return render_template('QR_register.html', form=form, error=error)
     
     
+
+
+
+
+
+
+
     
 #register customer
 @main_blueprint.route('/register/', methods=['GET', 'POST'])
@@ -77,15 +87,6 @@ def register():
                 error= 'That username and/or email already exists.'
                 return render_template('register.html', form=form, error=error)
     return render_template('register.html', form=form, error=error)
-
-
-
-
-
-
-
-
-
 
 
 
