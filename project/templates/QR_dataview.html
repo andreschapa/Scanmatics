@@ -1,14 +1,45 @@
 {% extends "_base.html" %}
 {% block content %}
+<img src=https://media-exp1.licdn.com/dms/image/C4E0BAQH9ry_VPEPBPw/company-logo_200_200/0/1609696203090?e=1617840000&v=beta&t=zZvbSC0Zr3i8zwrTiRD5o6XwapPBs4lByvXKSOJi6ZA>
+  <div class="container">
+    <div class="row">
+      <div class="col-12-xs">
+        <h3>{{ panel_name }} Panel Documents</h3>
+        
+        &nbsp;
+        &nbsp;
+        <form class="upload-form" action="/upload/{{ panel_id }}/" method="post" enctype="multipart/form-data">
+          <p><input type="file" name="file"></p>
+          <button type="submit" name="Submit" class="btn btn-primary">Upload</button>
 
+        </form>
+        
+        <table class="table table-striped">
+          <tr>
+            <th>Filename</th>
+            <th></th>
+          </tr>
+        {% for f in files %}
+        <tr>
+          <td>{{f.key}}</td>
+          <td>
+            <form class="delete-form" action="{{ url_for('main.delete', panel_id=panel_id) }}" method ="post">
+              <input type="hidden" name="key" value= "{{ f.key }}">
+              <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+            </form>
+            <br>
+            <form class="download-form" action="{{ url_for('main.download', panel_id=panel_id) }}" method ="post">
+              <input type="hidden" name="key" value= "{{ f.key }}">
+              <button type="submit" class="btn btn-default btn-sm">Download</button>
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+        </table>
 
-
-
-
-
-
-
-
-
+      </div>
+    </div>
+  </div>
+       
 
 {% endblock %}

@@ -75,7 +75,7 @@ def QRfiles(panel_id):
     #summaries=my_bucket.objects.all()
     summaries=my_bucket.objects.filter(Prefix=f'{PANEL_ID}/')
     
-    return render_template('files.html', my_bucket=my_bucket, files=summaries, project_id=project_id, panel_id=panel_id, panel_name=panel_name )
+    return render_template('QR_dataview', my_bucket=my_bucket, files=summaries, project_id=project_id, panel_id=panel_id, panel_name=panel_name )
  ####   
 
 
