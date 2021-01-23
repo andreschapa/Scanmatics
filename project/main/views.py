@@ -35,13 +35,20 @@ def QRmain(QR_id):
     form=RegisterQRForm(request.form)
 
     qrcode=QRcode.query.filter_by(QR_id=QR_id).first()
+    
     if qrcode is not None :
         panel_id=qrcode.panel_id #pulling panel ID from QRcode model
         return redirect(url_for('main.QRfiles',panel_id=panel_id))
 
     if request.method== 'POST':
         if form.validate_on_submit():
+            panel=Panel.query.filter_by(form.panel_id.data).first()
             ##need to add code here that checks match of form data to 
+            if panel.panel_id is None:
+
+                flash('That panel ID is not valid')
+                return redirect(url_for('main.QRmain', QR_id=QR_id))
+            
             new_QR= QRcode(
                 form.panel_id.data,
                 form.panel_project_customer_id.data,
