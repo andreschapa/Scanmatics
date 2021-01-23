@@ -4,14 +4,11 @@ from .forms import AddCustomerForm, RegisterForm, LoginForm, AddProjectForm, Add
 from functools import wraps
 from flask import Flask, flash, redirect, render_template, \
 request, session, url_for, Response, Blueprint
-#from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.exc import IntegrityError
-#from flask_bcrypt import Bcrypt
 
 from project.models import Customer, User, Project, Panel, QRcode
 from project import db, bcrypt
 main_blueprint= Blueprint('main', __name__)
-
 
 import boto3
 import os
@@ -36,6 +33,8 @@ def QRmain(QR_id):
     QR_id=QR_id
     error=None
     form=RegisterQRForm(request.form)
+    #Add if statement to check the QR_id has been linked or not
+    #if it's been linked, redirect to QR view login if
     if request.method== 'POST':
         if form.validate_on_submit():
             new_QR= QRcode(
@@ -48,13 +47,13 @@ def QRmain(QR_id):
                 db.session.add(new_QR)
                 db.session.commit()
                 flash('Thanks for registering QR code.')
-                return redirect(url_for('main.login'))
-            except IntegrityError:
+                return redirect(url_for('main.login')) #### change this to the QR URL
+            except IntegrityError: #Verify integrity error works for other shit besides email
                 error= 'That panel ID has already been linked to a QR code.'
                 return render_template('QR_register.html', form=form, error=error)
     return render_template('QR_register.html', form=form, error=error)
-    QR_id=QR_id
-    return render_template('QR_register.html', QR_id=QR_id)
+    
+    
     
 #register customer
 @main_blueprint.route('/register/', methods=['GET', 'POST'])
