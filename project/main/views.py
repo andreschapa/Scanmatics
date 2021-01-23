@@ -45,7 +45,7 @@ def QRmain(QR_id):
             PID=request.form['panel_id']
             panel=Panel.query.filter_by(panel_id=PID).first()
             ##need to add code here that checks match of form data to 
-            if panel.panel_id is None:
+            if panel is None:
 
                 flash('That panel ID is not valid')
                 return redirect(url_for('main.QRmain', QR_id=QR_id))
