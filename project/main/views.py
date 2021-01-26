@@ -52,7 +52,7 @@ def QRmain(QR_id):
             
             new_QR= QRcode(
                 form.panel_id.data,
-                form.panel_project_customer_id.data,
+                form.project_id.data,
                 form.panel_name.data,
                 QR_id
             )
