@@ -6,18 +6,18 @@
 <form method="POST" action="">
   {{ form.csrf_token }}
   <div>
+    {{ form.panel_name.label }}
+    {{ form.panel_name}}
+  </div>
+  <div>
     {{ form.panel_id.label }}
     {{ form.panel_id }}
   </div>
   <div>
-    {{ form.panel_project_customer_id.label }}
-    {{ form.panel_project_customer_id}}
+    {{ form.project_id.label }}
+    {{ form.project_id}}
   </div>
-  <div>
-    {{ form.panel_name.label }}
-    {{ form.panel_name}}
-  </div>
-
+  
   <div>
     <input type="submit" value="Register QR code"></p>
   </div>
