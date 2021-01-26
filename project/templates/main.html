@@ -38,7 +38,7 @@
           <td width="300px">{{ customer.name }}</td>
           <td>
             <button type="submit" class="btn btn-default btn-sm"><a href="{{ url_for('main.projects', customer_id = customer.customer_id) }}">Projects</a></button>
-            <button type="submit" class="btn btn-danger btn-sm"><a href="{{ url_for('main.delete_customer', customer_id = customer.customer_id) }}">Delete</a></button>
+            <button type="submit" class="btn btn-danger btn-sm"><a href="{{ url_for('main.delete_customer', customer_id = customer.customer_id) }}" class="text-white">Delete</a></button>
           </td>
         </tr>
       {% endfor %}
