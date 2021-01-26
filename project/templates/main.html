@@ -37,8 +37,8 @@
         <tr>
           <td width="300px">{{ customer.name }}</td>
           <td>
-            <a href="{{ url_for('main.projects', customer_id = customer.customer_id) }}">Projects</a>
-            <a href="{{ url_for('main.delete_customer', customer_id = customer.customer_id) }}">Delete</a> 
+            <button type="submit" class="btn btn-default btn-sm"><a href="{{ url_for('main.projects', customer_id = customer.customer_id) }}">Projects</a></button>
+            <button type="submit" class="btn btn-danger btn-sm"><a href="{{ url_for('main.delete_customer', customer_id = customer.customer_id) }}">Delete</a></button>
           </td>
         </tr>
       {% endfor %}
@@ -49,3 +49,6 @@
 </div>
 
 {% endblock %}
+
+
+
