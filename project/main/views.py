@@ -47,8 +47,8 @@ def QRmain(QR_id):
             ##need to add code here that checks match of form data to 
             if panel is None:
 
-                flash('That panel ID is not valid', 'error')
-                return redirect(url_for('main.QRmain', QR_id=QR_id))
+                error= 'That panel does not exist'
+                return render_template('QR_register.html', form=form, error=error)
             
             new_QR= QRcode(
                 form.panel_id.data,
