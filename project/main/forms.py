@@ -5,7 +5,7 @@ from wtforms.validators import DataRequired, Length, EqualTo, Email
 class RegisterQRForm(Form):
 
     panel_id=IntegerField('Panel ID', validators=[DataRequired()])
-    panel_project_customer_id=IntegerField('Panel Project Customer ID', validators=[DataRequired()])
+    panel_project_customer_id=IntegerField('Project ID', validators=[DataRequired()])
     panel_name=StringField('Panel Name', validators=[DataRequired()])
 
 
