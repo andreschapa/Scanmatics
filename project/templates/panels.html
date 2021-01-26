@@ -4,9 +4,8 @@
 <h1>{{ project_name }} Panels</h1>
 
 <div>
-    <a href="{{ url_for('main.projects',customer_id=panel_project_customer_id) }}">Back</a>
+  <button type="submit" class="btn btn-default btn-sm"><a href="{{ url_for('main.projects',customer_id=panel_project_customer_id) }}">Back</a></button>
 </div>
-
 <div class="add-panel">
   <h3>Add a new panel to the project</h3>
   <table class="table table-striped">
