@@ -50,7 +50,8 @@ def QRmain(QR_id):
                 error= 'That panel does not exist'
                 return render_template('QR_register.html', form=form, error=error)
             ##checks that panel id, project ID, and panel name is exact for data protection purposes
-            if panel.panel_id != request.form['panel_id'] or panel.project_id != request.form['project_id'] or panel.panel_name != request.form['panel_name']:
+
+            if panel.panel_id != request.form['panel_id']: #or panel.project_id != request.form['project_id'] or panel.panel_name != request.form['panel_name']:
                 error= 'Panel ID, Project ID and Panel Name must be exact match. Panel name is case sensitive. '
                 return render_template('QR_register.html', form=form, error=error)
 
