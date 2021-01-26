@@ -75,13 +75,13 @@ class Panel(db.Model):
 class QRcode(db.Model):
     __tablename__='QRcodes'
     panel_id=db.Column(db.Integer, unique=True)
-    panel_project_customer_id=db.Column(db.Integer, nullable=False)
+    project_id=db.Column(db.Integer, nullable=False)
     panel_name=db.Column(db.String, nullable=False)
     QR_id=db.Column(db.Integer, primary_key=True)
 
-    def __init__(self, panel_id, panel_project_customer_id, panel_name, QR_id):
+    def __init__(self, panel_id, project_id, panel_name, QR_id):
         self.panel_id=panel_id
-        self.panel_project_customer_id=panel_project_customer_id
+        self.project_id=project_id
         self.panel_name=panel_name
         self.QR_id=QR_id
        
