@@ -66,7 +66,7 @@ def QRmain(QR_id):
                     return render_template('QR_register.html', form=form, error=error)
 
             else:
-                error= f'{panel.panel_ID} = {PID}'
+                error= f'{panel.panel_id} = {PID}'
                 return render_template('QR_register.html', form=form, error=error)
 
             if panel is None:
