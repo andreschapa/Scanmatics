@@ -45,14 +45,8 @@ def QRmain(QR_id):
             PID=request.form['panel_id']
             panel=Panel.query.filter_by(panel_id=PID).first()
             ##checks if panel exists
-            if panel is None:
-
-                error= 'That panel does not exist'
-                return render_template('QR_register.html', form=form, error=error)
-            ##checks that panel id, project ID, and panel name is exact for data protection purposes
-            panel=Panel.query.filter_by(panel_id=PID).first()
-
-            if panel is not None: #and panel.panel_id == request.form['panel_id'] and panel.project_id == request.form['project_id'] and panel.panel_name == request.form['panel_name']:
+            
+            if panel is not None and panel.panel_id == request.form['panel_id'] and panel.project_id == request.form['project_id'] and panel.panel_name == request.form['panel_name']:
                
 
                 new_QR= QRcode(
@@ -73,6 +67,13 @@ def QRmain(QR_id):
             else:
                 error= 'Panel ID, Project ID and Panel Name must be exact match. Panel name is case sensitive. '
                 return render_template('QR_register.html', form=form, error=error)
+
+            if panel is None:
+
+                error= 'That panel does not exist'
+                return render_template('QR_register.html', form=form, error=error)
+            ##checks that panel id, project ID, and panel name is exact for data protection purposes
+            panel=Panel.query.filter_by(panel_id=PID).first()
     return render_template('QR_register.html', form=form, error=error)
 
 
