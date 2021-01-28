@@ -66,7 +66,7 @@ def QRmain(QR_id):
                     return render_template('QR_register.html', form=form, error=error)
 
             else:
-                error= f'{panel.panel_id} = {PID}'
+                error= 'Panel name does not match. This field is case sensitive'
                 return render_template('QR_register.html', form=form, error=error)
 
             if panel is None:
