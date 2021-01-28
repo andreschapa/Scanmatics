@@ -42,12 +42,12 @@ def QRmain(QR_id):
 
     if request.method== 'POST':
         if form.validate_on_submit():
-            PID=request.form['panel_id']
-            panel=Panel.query.filter_by(panel_id=PID).first()
-            PanelID=panel.panel_id
+            #PID=request.form['panel_id']
+            panel=Panel.query.filter_by(name=request.form['panel_name']).first()
+            
             ##checks if panel exists
             
-            if panel is not None and PanelID == PID: #and panel.project_id == request.form['project_id'] and panel.panel_name == request.form['panel_name']:
+            if panel is not None and panel.panel_id == request.form['panel_id']: #and panel.project_id == request.form['project_id'] and panel.panel_name == request.form['panel_name']:
                
 
                 new_QR= QRcode(
