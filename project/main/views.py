@@ -47,7 +47,7 @@ def QRmain(QR_id):
             
             ##checks if panel exists
             
-            if panel.panel_id == request.form['panel_id']: #and panel.project_id == request.form['project_id'] and panel.panel_name == request.form['panel_name']:
+            if panel.panel_name == request.form['panel_name']:
                
 
                 new_QR= QRcode(
