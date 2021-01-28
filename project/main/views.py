@@ -52,7 +52,7 @@ def QRmain(QR_id):
             ##checks that panel id, project ID, and panel name is exact for data protection purposes
             panel=Panel.query.filter_by(panel_id=PID).first()
 
-            if panel is not None and panel.panel_id == request.form['panel_id']:# and panel.project_id == request.form['project_id'] and panel.panel_name == request.form['panel_name']:
+            if panel is not None: #and panel.panel_id == request.form['panel_id'] and panel.project_id == request.form['project_id'] and panel.panel_name == request.form['panel_name']:
                
 
                 new_QR= QRcode(
