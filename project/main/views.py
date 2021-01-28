@@ -52,22 +52,25 @@ def QRmain(QR_id):
             ##checks that panel id, project ID, and panel name is exact for data protection purposes
 
             if panel.panel_id == request.form['panel_id'] and panel.project_id == request.form['project_id'] and panel.panel_name == request.form['panel_name']:
-               error= 'Panel ID, Project ID and Panel Name must be exact match. Panel name is case sensitive. '
-               return render_template('QR_register.html', form=form, error=error)
+               
 
-            new_QR= QRcode(
+                new_QR= QRcode(
                 form.panel_id.data,
                 form.project_id.data,
                 form.panel_name.data,
                 QR_id
-            )
-            try:
-                db.session.add(new_QR)
-                db.session.commit()
-                flash('Thanks for registering QR code.')
-                return redirect(url_for('main.login')) #### change this to the QR URL
-            except IntegrityError: #Verify integrity error works for other shit besides email
-                error= 'That panel ID has already been linked to a QR code.'
+                )
+                try:
+                    db.session.add(new_QR)
+                    db.session.commit()
+                    flash('Thanks for registering QR code.')
+                    return redirect(url_for('main.login')) #### change this to the QR URL
+                except IntegrityError: #Verify integrity error works for other shit besides email
+                    error= 'That panel ID has already been linked to a QR code.'
+                    return render_template('QR_register.html', form=form, error=error)
+
+            else:
+                error= 'Panel ID, Project ID and Panel Name must be exact match. Panel name is case sensitive. '
                 return render_template('QR_register.html', form=form, error=error)
     return render_template('QR_register.html', form=form, error=error)
 
