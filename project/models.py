@@ -79,7 +79,7 @@ class QRcode(db.Model):
     panel_name=db.Column(db.String, nullable=False)
     QR_id=db.Column(db.Integer, primary_key=True)
 
-    def __init__(self, panel_id, project_id, panel_name, QR_id):
+    def __init__(self, panel_id=None, project_id=None, panel_name=None, QR_id=None):
         self.panel_id=panel_id
         self.project_id=project_id
         self.panel_name=panel_name

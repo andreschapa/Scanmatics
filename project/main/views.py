@@ -50,6 +50,7 @@ def QRmain(QR_id):
                 error= 'That panel does not exist'
                 return render_template('QR_register.html', form=form, error=error)
             ##checks that panel id, project ID, and panel name is exact for data protection purposes
+            panel=Panel.query.filter_by(panel_id=PID).first()
 
             if panel.panel_id == request.form['panel_id'] and panel.project_id == request.form['project_id'] and panel.panel_name == request.form['panel_name']:
                
