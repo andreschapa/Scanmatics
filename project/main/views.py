@@ -78,7 +78,7 @@ def QRmain(QR_id):
 def QRfiles(panel_id):
     qrcode=QRcode.query.filter_by(panel_id=panel_id).first()
     if qrcode is None:
-        return redirect(url_for('main.main'))
+        return redirect(url_for('main.login'))
 
     #Panels=db.session.query(Panel).filter_by(panel_id=panel_id).order_by(Panel.name.asc())
     panels=Panel.query.filter_by(panel_id=panel_id).first()
