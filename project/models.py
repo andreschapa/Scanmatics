@@ -74,7 +74,7 @@ class Panel(db.Model):
 #added 1/20
 class QRcode(db.Model):
     __tablename__='QRcodes'
-    panel_id=db.Column(db.Integer, unique=True)
+    panel_id=db.Column(db.Integer, primary_key=True)
     project_id=db.Column(db.Integer, nullable=False)
     panel_name=db.Column(db.String, nullable=False)
     QR_id=db.Column(db.Integer, unique=True)
