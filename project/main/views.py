@@ -76,6 +76,10 @@ def QRmain(QR_id):
 ###
 @main_blueprint.route('/QRfiles/<int:panel_id>/')
 def QRfiles(panel_id):
+    qrcode=QRcode.query.filter_by(panel_id=panel_id).first()
+    if qrcode is None:
+        return redirect(url_for('main.main'))
+
     #Panels=db.session.query(Panel).filter_by(panel_id=panel_id).order_by(Panel.name.asc())
     panels=Panel.query.filter_by(panel_id=panel_id).first()
     project_id=panels.panel_project_id
