@@ -43,7 +43,7 @@ def QRmain(QR_id):
     if request.method== 'POST':
         if form.validate_on_submit():
             PID=request.form['panel_id']
-            panel=Panel.query.filter_by(name=request.form['panel_name']).first()
+            panel=Panel.query.filter_by(panel_id=PID).first()
             
             ##checks if panel exists
             
