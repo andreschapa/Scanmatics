@@ -46,6 +46,11 @@ def QRmain(QR_id):
             panel=Panel.query.filter_by(panel_id=PID).first()
             
             ##checks if panel exists
+
+            if panel is None:
+
+                error= 'That panel does not exist'
+                return render_template('QR_register.html', form=form, error=error)
             
             if panel is not None and panel.name == request.form['panel_name']: #and panel.panel_id == request.form['panel_id'] and panel.project_id == request.form['project_id']:
                
@@ -68,13 +73,7 @@ def QRmain(QR_id):
             else:
                 error= 'Panel name does not match. This field is case sensitive'
                 return render_template('QR_register.html', form=form, error=error)
-
-            if panel is None:
-
-                error= 'That panel does not exist'
-                return render_template('QR_register.html', form=form, error=error)
-            
-            
+      
     return render_template('QR_register.html', form=form, error=error)
 
 
