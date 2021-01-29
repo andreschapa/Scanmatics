@@ -52,7 +52,7 @@ def QRmain(QR_id):
 
                 new_QR= QRcode(
                 form.panel_id.data,
-                form.project_id.data,
+                form.end_user.data,
                 form.panel_name.data,
                 QR_id
                 )
@@ -73,8 +73,8 @@ def QRmain(QR_id):
 
                 error= 'That panel does not exist'
                 return render_template('QR_register.html', form=form, error=error)
-            ##checks that panel id, project ID, and panel name is exact for data protection purposes
-            panel=Panel.query.filter_by(panel_id=PID).first()
+            
+            
     return render_template('QR_register.html', form=form, error=error)
 
 
@@ -86,19 +86,16 @@ def QRfiles(panel_id):
     if qrcode is None:
         return redirect(url_for('main.login'))
 
-    #Panels=db.session.query(Panel).filter_by(panel_id=panel_id).order_by(Panel.name.asc())
     panels=Panel.query.filter_by(panel_id=panel_id).first()
-    project_id=panels.panel_project_id
     panel_id=panels.panel_id
     PANEL_ID=str(panel_id)
     panel_name=panels.name
 
     s3_resource=boto3.resource('s3')
     my_bucket=s3_resource.Bucket(S3_BUCKET)
-    #summaries=my_bucket.objects.all()
     summaries=my_bucket.objects.filter(Prefix=f'{PANEL_ID}/')
     
-    return render_template('QR_dataview.html', my_bucket=my_bucket, files=summaries, project_id=project_id, panel_id=panel_id, panel_name=panel_name )
+    return render_template('QR_dataview.html', my_bucket=my_bucket, files=summaries, panel_id=panel_id, panel_name=panel_name )
  ####   
 
 
