@@ -7,7 +7,7 @@ request, session, url_for, Response, Blueprint
 from sqlalchemy.exc import IntegrityError
 
 from project.models import Customer, User, Project, Panel, QRcode
-from project import db, bcrypt
+from project import db, bcrypt 
 main_blueprint= Blueprint('main', __name__)
 
 import boto3
@@ -382,4 +382,7 @@ def download(panel_id):
 
     )
 
+@main_blueprint.route('/forgot', methods=('GET','POST'))
+def forgot():
+    return "Forgot Password"
 

@@ -58,4 +58,11 @@ class AddPanelForm(Form):
     name=StringField('Panel Name', validators=[DataRequired()])
 
 
-    
+class ForgotForm(Form):
+    email= StringField(
+        'Email',
+        validators=[DataRequired(), Email(), Length(min=6, max=40)]
+    )
+
+class PasswordResetForm(Form):
+    current_password=PasswordField('Current Password',  validators=[DataRequired(), Length(min=6, max=40)])

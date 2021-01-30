@@ -15,3 +15,7 @@ db = SQLAlchemy(app)
 
 from project.main.views import main_blueprint
 app.register_blueprint(main_blueprint)
+
+from itsdangerous import URLSafeTimedSerializer
+
+
