@@ -1,5 +1,5 @@
 #views
-from .forms import AddCustomerForm, RegisterForm, LoginForm, AddProjectForm, AddPanelForm,RegisterQRForm
+from .forms import AddCustomerForm, RegisterForm, LoginForm, AddProjectForm, AddPanelForm,RegisterQRForm, ForgotForm
 
 from functools import wraps
 from flask import Flask, flash, redirect, render_template, \
@@ -384,5 +384,9 @@ def download(panel_id):
 
 @main_blueprint.route('/forgot', methods=('GET','POST'))
 def forgot():
-    return "Forgot Password"
-
+    error=None
+    form= ForgotForm(request.form)
+    if form.validate_on_submit():
+        pass
+    return render_template('forgot.html', form=form, error=error)
+   
