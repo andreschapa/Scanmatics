@@ -27,8 +27,11 @@
   <div class="">
     <em>Need an account? </em><a href="/register">Signup!</a>
   </div>
+  <div class="">
+    <a href="{{ url_for('reset_request')}}">Forgot password?</a>
+  </div>
   
-  <span id="passwordHelpBlock" class ="help-block"><a href="{{url_for('main.forgot')}}"> Forgot password?</a></span>
+  
 
 {% endblock %}
 

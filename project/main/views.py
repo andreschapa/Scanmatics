@@ -1,13 +1,13 @@
 #views
-from .forms import AddCustomerForm, RegisterForm, LoginForm, AddProjectForm, AddPanelForm,RegisterQRForm, ForgotForm
+from .forms import AddCustomerForm, RegisterForm, LoginForm, AddProjectForm, AddPanelForm,RegisterQRForm, RequestResetForm, ResetPasswordForm
 
 from functools import wraps
 from flask import Flask, flash, redirect, render_template, \
 request, session, url_for, Response, Blueprint
 from sqlalchemy.exc import IntegrityError
-
+from flask_mail import Message
 from project.models import Customer, User, Project, Panel, QRcode
-from project import db, bcrypt 
+from project import db, bcrypt , mail
 main_blueprint= Blueprint('main', __name__)
 
 import boto3
@@ -382,11 +382,51 @@ def download(panel_id):
 
     )
 
-@main_blueprint.route('/forgot', methods=('GET','POST'))
-def forgot():
-    error=None
-    form= ForgotForm(request.form)
+
+
+def send_reset_email(user):
+    token=user.get_reset_token()
+    msg=Message('Password Reset Request', sender='main@scanmatics.com', recipients=[user.email] )
+
+    msg.body= f'''To reset your password, visit the following link:
+{url_for('reset_token', token=token, _external=True)}
+
+    If you did not make this request then simply ignore this email and no changes wil be made
+'''
+    mail.send(msg)
+    
+@main_blueprint.route('/reset_password', methods=['GET', 'POST'])
+def reset_request():
+    form=RequestResetForm(request.form)
     if form.validate_on_submit():
-        pass
-    return render_template('forgot.html', form=form, error=error)
-   
+        user=User.query.filter_by(email=request.form['email']).first()
+        send_reset_email(user)
+        flash('An email has been sent with instructions to reset your password.', 'info')
+        return redirect(url_for('main.login'))
+    return render_template('reset_request.html', title='Reset Password', form=form)
+
+@main_blueprint.route('/reset_password/<token>', methods=['GET', 'POST'])
+def reset_token(token):
+    user=User.verify_reset_token(token)
+    if user is None:
+        flash('That is an invalid or expired token', 'warning')
+        return redirect(url_for('reset_request'))
+    form = ResetPasswordForm(request.form)
+    if form.validate_on_submit():
+            
+        hashed_password=bcrypt.generate_password_hash(form.password.data).decode('utf-8'),####### added.decode(utf-8)
+        user.password=hashed_password               
+        db.session.commit()
+        flash('Your password has been updated.')
+        return redirect(url_for('main.login'))
+    return render_template('reset_token.html', title='Reset Password',form= form)
+
+
+
+
+
+    
+    
+
+
+

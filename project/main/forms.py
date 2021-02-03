@@ -1,5 +1,5 @@
 from flask_wtf import Form
-from wtforms import StringField, DateField, IntegerField, SelectField, PasswordField
+from wtforms import StringField, DateField, IntegerField, SelectField, PasswordField, SubmitField
 from wtforms.validators import DataRequired, Length, EqualTo, Email
 
 class RegisterQRForm(Form):
@@ -57,12 +57,21 @@ class AddPanelForm(Form):
     panel_id=IntegerField()
     name=StringField('Panel Name', validators=[DataRequired()])
 
-
-class ForgotForm(Form):
+class RequestResetForm(Form):
     email= StringField(
         'Email',
-        validators=[DataRequired(), Email(), Length(min=6, max=40)]
-    )
+        validators=[DataRequired(), Email(), Length(min=6, max=40)])
+    submit=SubmitField('Request Password Reset')
 
-class PasswordResetForm(Form):
-    current_password=PasswordField('Current Password',  validators=[DataRequired(), Length(min=6, max=40)])
+class ResetPasswordForm(Form):
+    password = PasswordField(
+        'Password',
+        validators=[DataRequired(), Length(min=6, max=40)])
+    confirm= PasswordField(
+        'Repeat Password',
+        validators=[DataRequired(), EqualTo('password', message='Passwords must match')])
+    submit=SubmitField('Reset Password')
+    
+
+
+
