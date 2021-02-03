@@ -12,6 +12,7 @@ app = Flask(__name__)
 app.config.from_pyfile('_config.py')
 bcrypt = Bcrypt(app)
 db = SQLAlchemy(app)
+mail = Mail(app)
 
 from project.main.views import main_blueprint
 app.register_blueprint(main_blueprint)
@@ -23,4 +24,3 @@ app.config['MAIL_SERVER']='smtp.googlemail.com'
 app.config['MAIL_USERNAME']=os.environ.get('MAIL_USERNAME')
 app.config['MAIL_PASSWORD']=os.environ.get('MAIL_PASSWORD')
 
-mail = Mail(app)
