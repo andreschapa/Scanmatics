@@ -23,4 +23,4 @@ app.config['MAIL_SERVER']='smtp.googlemail.com'
 app.config['MAIL_USERNAME']=os.environ.get('MAIL_USERNAME')
 app.config['MAIL_PASSWORD']=os.environ.get('MAIL_PASSWORD')
 
-mail=Mail(app)
+mail = Mail(app)
