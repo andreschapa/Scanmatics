@@ -5,7 +5,7 @@ from functools import wraps
 from flask import Flask, flash, redirect, render_template, \
 request, session, url_for, Response, Blueprint
 from sqlalchemy.exc import IntegrityError
-from flask_mail import Message
+from flask_mail import Message, Mail
 from project.models import Customer, User, Project, Panel, QRcode
 from project import db, bcrypt , mail
 main_blueprint= Blueprint('main', __name__)
@@ -25,8 +25,6 @@ s3=boto3.client('s3')
 #)
 
 
-
-############# QR CODE SHIT WILL MOVE THIS TO THE BOTTOM ONCE DONE WITH DEVELOPMENT##################
 #register QR code
 @main_blueprint.route('/QRmain/<int:QR_id>', methods=['GET', 'POST'])
 def QRmain(QR_id):
