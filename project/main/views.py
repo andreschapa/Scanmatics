@@ -128,9 +128,6 @@ def register():
 
 
 
-
-
-
 def login_required(test):
     @wraps(test)
     def wrap(*args, **kwargs):
@@ -385,7 +382,7 @@ def download(panel_id):
 
 
 def send_reset_email(user):
-    token=user.get_reset_token()
+    token = user.get_reset_token()
     msg=Message('Password Reset Request', sender='main@scanmatics.com', recipients=[user.email] )
 
     msg.body= f'''To reset your password, visit the following link:
@@ -394,7 +391,7 @@ def send_reset_email(user):
     If you did not make this request then simply ignore this email and no changes wil be made
 '''
     mail.send(msg)
-    
+
 @main_blueprint.route('/reset_password', methods=['GET', 'POST'])
 def reset_request():
     form=RequestResetForm(request.form)
