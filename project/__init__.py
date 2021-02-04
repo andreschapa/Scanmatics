@@ -24,4 +24,6 @@ app.config['MAIL_USE_SSL']=False
 app.config['MAIL_USERNAME']='main@scanmatics.com'
 app.config['MAIL_PASSWORD']='Scanmatics2020!'
 
+mail = Mail(app)
+
 
