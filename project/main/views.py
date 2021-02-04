@@ -161,8 +161,8 @@ def login():
                 return redirect(url_for('main.main'))
             else:
                 error= 'Invalid username, company name, or password.'
-        #else:
-            #error= 'All fields are required.'
+        else:
+            error= 'All fields are required.'
     return render_template('login.html', form=form, error=error)
        
 
