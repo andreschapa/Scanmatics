@@ -4,7 +4,8 @@ import datetime
 from flask import Flask, render_template, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
-from flaskext.mail import Mail, Message 
+from flask_mail import Mail, Message
+ 
 import os
 
 
