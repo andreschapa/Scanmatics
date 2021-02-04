@@ -19,9 +19,9 @@ from project.main.views import main_blueprint, send_reset_email
 app.register_blueprint(main_blueprint)
 
 app.config['MAIL_SERVER'] = 'smtp.googlemail.com'
-app.config['MAIL_PORT']= 587
-app.config['MAIL_USE_TLS']=True
-app.config['MAIL_USE_SSL']=False
+app.config['MAIL_PORT']= 465
+app.config['MAIL_USE_TLS'] = False
+app.config['MAIL_USE_SSL'] = True
 app.config['MAIL_USERNAME']='main@scanmatics.com'
 app.config['MAIL_PASSWORD']='Scanmatics2020!'
 
