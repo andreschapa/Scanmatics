@@ -61,7 +61,7 @@ class RequestResetForm(Form):
     email= StringField(
         'Email',
         validators=[DataRequired(), Email(), Length(min=6, max=40)])
-    #submit=SubmitField('Request Password Reset')
+    submit=SubmitField('Request Password Reset')
 
 class ResetPasswordForm(Form):
     password = PasswordField(
