@@ -31,7 +31,7 @@ mail_settings = {
     "MAIL_USE_TLS": False,
     "MAIL_USE_SSL": True,
     "MAIL_USERNAME": 'main@scanmatics.com',
-    "MAIL_PASSWORD": 'xuchmgcsaejdhxuq'
+    "MAIL_PASSWORD": 'viegvulcogqqnzrh'
 }
 
 app.config.update(mail_settings)
