@@ -160,6 +160,11 @@ def login():
                 session['company_id']=user.company
                 session['name']=user.name
                 flash('Welcome!')
+                msg = Message(subject="Hello",
+                      sender=("main@scanmatics.com"),
+                      recipients=["andres.chapa@iidm.com"], # replace with your email for testing
+                      body="This is a test email I sent with Gmail and Python!")
+                mail.send(msg)
                 return redirect(url_for('main.main'))
             else:
                 error= 'Invalid username, company name, or password.'
@@ -386,12 +391,8 @@ def reset_request():
     form=RequestResetForm(request.form)
     if form.validate_on_submit():
         user=User.query.filter_by(email=request.form['email']).first()
-        #send_reset_email(user)
-        msg = Message(subject="Hello",
-                      sender=("main@scanmatics.com"),
-                      recipients=["andres.chapa@iidm.com"], # replace with your email for testing
-                      body="This is a test email I sent with Gmail and Python!")
-        mail.send(msg)
+        send_reset_email(user)
+        
         flash('An email has been sent with instructions to reset your password.')
         return redirect(url_for('main.login'))
     return render_template('reset_request.html', title='Reset Password', form=form)
