@@ -16,14 +16,16 @@ import os
 S3_BUCKET=os.environ.get('S3_BUCKET')
 s3=boto3.client('s3')
 
-#S# for configuring locally
-#from .s3config import S3_BUCKET, S3_KEY, S3_SECRET
-#s3=boto3.client(
-    #'s3',
-    #aws_access_key_id=S3_KEY,
-   # aws_secret_access_key=S3_SECRET
-#)
-
+def send_reset_email(user):
+    token = user.get_reset_token()
+    msg = Message('Password Reset Request',
+                  sender='main@scanmatics.com',
+                  recipients=[user.email])
+    msg.body = f'''To reset your password, visit the following link:
+{url_for('reset_token', token=token, _external=True)}
+If you did not make this request then simply ignore this email and no changes will be made.
+'''
+    mail.send(msg)
 
 #register QR code
 @main_blueprint.route('/QRmain/<int:QR_id>', methods=['GET', 'POST'])
@@ -378,17 +380,6 @@ def download(panel_id):
     )
 
 
-
-def send_reset_email(user):
-    token = user.get_reset_token()
-    msg = Message('Password Reset Request',
-                  sender='main@scanmatics.com',
-                  recipients=[user.email])
-    msg.body = f'''To reset your password, visit the following link:
-{url_for('reset_token', token=token, _external=True)}
-If you did not make this request then simply ignore this email and no changes will be made.
-'''
-    mail.send(msg)
 
 @main_blueprint.route('/reset_password', methods=['GET', 'POST'])
 def reset_request():
