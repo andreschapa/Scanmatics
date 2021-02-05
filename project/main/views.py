@@ -386,7 +386,15 @@ def reset_request():
     form=RequestResetForm(request.form)
     if form.validate_on_submit():
         user=User.query.filter_by(email=request.form['email']).first()
-        send_reset_email(user)
+        #send_reset_email(user)
+        msg = Message('Password Reset Request',
+                  sender='main@scanmatics.com',
+                  recipients=[user.email])
+        msg.body = f'''To reset your password, visit the following link:
+{url_for('reset_token', token=token, _external=True)}
+If you did not make this request then simply ignore this email and no changes will be made.
+'''
+        mail.send(msg)
         flash('An email has been sent with instructions to reset your password.')
         return redirect(url_for('main.login'))
     return render_template('reset_request.html', title='Reset Password', form=form)
