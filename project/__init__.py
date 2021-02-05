@@ -32,20 +32,18 @@ mail_settings = {
     "MAIL_USE_SSL": False,
     "MAIL_USERNAME": 'main@scanmatics.com',
     "MAIL_PASSWORD": 'viegvulcogqqnzrh',
-    "MAIL_SUPRESS_SEND": False,
-    "TESTING": False
 
 }
 
 app.config.update(mail_settings)
 mail = Mail(app)
 
-if __name__ == '__main__':
-    with app.app_context():
-        msg = Message(subject="Hello",
-                      sender=app.config.get("MAIL_USERNAME"),
-                      recipients=["andres.chapa@iidm.com"], # replace with your email for testing
-                      body="This is a test email I sent with Gmail and Python!")
-        mail.send(msg)
+#if __name__ == '__main__':
+   # with app.app_context():
+    #    msg = Message(subject="Hello",
+     #                 sender=app.config.get("MAIL_USERNAME"),
+     #                 recipients=["andres.chapa@iidm.com"], # replace with your email for testing
+     #                 body="This is a test email I sent with Gmail and Python!")
+     #   mail.send(msg)
 
 
