@@ -160,7 +160,7 @@ def login():
                 session['company_id']=user.company
                 session['name']=user.name
                 flash('Welcome!')
-                msg = Message(subject="Hello",
+                msg = Message(subject="Successful login",
                       sender=("main@scanmatics.com"),
                       recipients=["andres.chapa@iidm.com"], # replace with your email for testing
                       body="This is a test email I sent with Gmail and Python!")
