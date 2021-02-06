@@ -127,7 +127,7 @@ def emailQRlink(panel_id):
             msg = Message(subject=f"Link to {panel_name} data ",
                         sender=("main@scanmatics.com"),
                         recipients=[request.form['email']]) 
-            msg.body=f'''Click here to view panel documents:{url_for('QRlink', panel_id=panel_id, )}'''
+            msg.body=f'''Click here to view panel documents:{url_for('main.QRlink', panel_id=panel_id, )}'''
             mail.send(msg)
             flash('Email has been sent')
             return url_for('main.QRfiles', panel_id=panel_id)
