@@ -105,8 +105,7 @@ def QRfiles(panel_id):
                         body="This is a test email I sent with Gmail and Python!")
             mail.send(msg)
             flash('Email has been sent')
-            return render_template('QR_dataview.html', my_bucket=my_bucket, files=summaries, panel_id=panel_id, panel_name=panel_name, form=form )
-        
+            return url_for('main.QRfiles', panel_id=panel_id)
     
     return render_template('QR_dataview.html', my_bucket=my_bucket, files=summaries, panel_id=panel_id, panel_name=panel_name, form=form )
  ####   
