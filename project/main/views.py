@@ -130,7 +130,7 @@ def emailQRlink(panel_id):
             msg.body=f'''Click here to view panel documents:{url_for('main.QRlink', panel_id=panel_id, )}'''
             mail.send(msg)
             flash('Email has been sent')
-            return url_for('main.QRfiles', panel_id=panel_id)
+            return redirect(url_for('main.QRfiles', panel_id=panel_id))
 
 
 
