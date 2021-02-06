@@ -114,7 +114,7 @@ def QRfiles(panel_id):
     
     
     return render_template('QR_dataview.html', my_bucket=my_bucket, files=summaries, panel_id=panel_id, panel_name=panel_name, )
- ####   
+ 
 
 @main_blueprint.route('/QRemail/<int:panel_id>/', methods=['POST'])
 def emailQRlink(panel_id):
@@ -125,11 +125,13 @@ def emailQRlink(panel_id):
         if form.validate_on_submit():
             msg = Message(subject=f"Link to {panel_name} data ",
                         sender=("main@scanmatics.com"),
-                        recipients=[request.form['email']], 
-                        body=F"{url_for('QRlink', panel_id=panel_id}")
+                        recipients=[request.form['email']]) 
+            msg.body=f'''Click here to view panel documents:{url_for('QRlink', panel_id=panel_id, )}'''
             mail.send(msg)
             flash('Email has been sent')
             return url_for('main.QRfiles', panel_id=panel_id)
+
+
 
     
 #register customer
