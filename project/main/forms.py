@@ -69,6 +69,12 @@ class ResetPasswordForm(Form):
         validators=[DataRequired(), EqualTo('password', message='Passwords must match')])
     submit=SubmitField('Reset Password')
     
+    
+class SendEmailLink(Form):
+    email= StringField(
+        'Email',
+        validators=[DataRequired(), Email(), Length(min=6, max=40)])
+    
 
 
 

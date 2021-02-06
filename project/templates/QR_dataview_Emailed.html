@@ -6,19 +6,6 @@
       <div class="col-12-xs">
         <h3>{{ panel_name }} Panel Documents</h3>
         
-        <h4> Email link to this page here</h4>
-        <form method="post" action="">
-          {{ form.csrf_token }}
-          <div>
-            {{ form.email.label }}
-          </div>
-          <div>
-            {{ form.email }}
-            <input type="submit" value="Send">
-          </div>
-        </form>
-        
-        
         &nbsp;
         &nbsp;
         <form class="upload-form" action="/upload/{{ panel_id }}/" method="post" enctype="multipart/form-data">
