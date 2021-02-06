@@ -79,7 +79,7 @@ def QRmain(QR_id):
 
 
 
-@main_blueprint.route('/QRfiles/<int:panel_id>/')
+@main_blueprint.route('/QRfiles/<int:panel_id>/',methods=['GET', 'POST'])
 def QRfiles(panel_id):
     form=SendEmailLink(request.form)
     qrcode=QRcode.query.filter_by(panel_id=panel_id).first()
@@ -97,13 +97,14 @@ def QRfiles(panel_id):
     s3_resource=boto3.resource('s3')
     my_bucket=s3_resource.Bucket(S3_BUCKET)
     summaries=my_bucket.objects.filter(Prefix=f'{PANEL_ID}/')
-    if form.validate_on_submit():
-        msg = Message(subject=f"Link to {panel_name} data ",
-                      sender=("main@scanmatics.com"),
-                      recipients=[request.form['email']], 
-                      body="This is a test email I sent with Gmail and Python!")
-        mail.send(msg)
-        return render_template('QR_dataview.html', my_bucket=my_bucket, files=summaries, panel_id=panel_id, panel_name=panel_name, form=form )
+    if request.method== 'POST':
+        if form.validate_on_submit():
+            msg = Message(subject=f"Link to {panel_name} data ",
+                        sender=("main@scanmatics.com"),
+                        recipients=[request.form['email']], 
+                        body="This is a test email I sent with Gmail and Python!")
+            mail.send(msg)
+            return render_template('QR_dataview.html', my_bucket=my_bucket, files=summaries, panel_id=panel_id, panel_name=panel_name, form=form )
         
     
     return render_template('QR_dataview.html', my_bucket=my_bucket, files=summaries, panel_id=panel_id, panel_name=panel_name, form=form )
