@@ -97,6 +97,7 @@ def QRlink(panel_id):
 @main_blueprint.route('/QRfiles/<int:panel_id>/')
 def QRfiles(panel_id):
     qrcode=QRcode.query.filter_by(panel_id=panel_id).first()
+    form=SendEmailLink(request.form)
     if qrcode is None: ##idk why i put this shit here
         
         return redirect(url_for('main.login'))
@@ -113,7 +114,7 @@ def QRfiles(panel_id):
     summaries=my_bucket.objects.filter(Prefix=f'{PANEL_ID}/')
     
     
-    return render_template('QR_dataview.html', my_bucket=my_bucket, files=summaries, panel_id=panel_id, panel_name=panel_name, )
+    return render_template('QR_dataview.html', my_bucket=my_bucket, files=summaries, panel_id=panel_id, panel_name=panel_name, form=form)
  
 
 @main_blueprint.route('/QRemail/<int:panel_id>/', methods=['POST'])
