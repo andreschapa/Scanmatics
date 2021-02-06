@@ -76,12 +76,26 @@ def QRmain(QR_id):
       
     return render_template('QR_register.html', form=form, error=error)
 
+###use this to view files from emailed link
+@main_blueprint.route('/QRlink/<int:panel_id>/')
+def QRlink(panel_id):
+    qrcode=QRcode.query.filter_by(panel_id=panel_id).first()
+   
+    panels=Panel.query.filter_by(panel_id=panel_id).first()
+    panel_id=panels.panel_id
+    PANEL_ID=str(panel_id)
+    panel_name=panels.name
+
+    s3_resource=boto3.resource('s3')
+    my_bucket=s3_resource.Bucket(S3_BUCKET)
+    summaries=my_bucket.objects.filter(Prefix=f'{PANEL_ID}/')
+    
+    
+    return render_template('QR_dataview_emailed.html', my_bucket=my_bucket, files=summaries, panel_id=panel_id, panel_name=panel_name, )
 
 
-
-@main_blueprint.route('/QRfiles/<int:panel_id>/',methods=['GET', 'POST'])
+@main_blueprint.route('/QRfiles/<int:panel_id>/')
 def QRfiles(panel_id):
-    form=SendEmailLink(request.form)
     qrcode=QRcode.query.filter_by(panel_id=panel_id).first()
     if qrcode is None: ##idk why i put this shit here
         
@@ -97,22 +111,25 @@ def QRfiles(panel_id):
     s3_resource=boto3.resource('s3')
     my_bucket=s3_resource.Bucket(S3_BUCKET)
     summaries=my_bucket.objects.filter(Prefix=f'{PANEL_ID}/')
+    
+    
+    return render_template('QR_dataview.html', my_bucket=my_bucket, files=summaries, panel_id=panel_id, panel_name=panel_name, )
+ ####   
+
+@main_blueprint.route('/QRemail/<int:panel_id>/', methods=['POST'])
+def emailQRlink(panel_id):
+    form=SendEmailLink(request.form)
+    panels=Panel.query.filter_by(panel_id=panel_id).first()
+    panel_name=panels.name
     if request.method== 'POST':
         if form.validate_on_submit():
             msg = Message(subject=f"Link to {panel_name} data ",
                         sender=("main@scanmatics.com"),
                         recipients=[request.form['email']], 
-                        body="This is a test email I sent with Gmail and Python!")
+                        body=F"{url_for('QRlink', panel_id=panel_id}")
             mail.send(msg)
             flash('Email has been sent')
             return url_for('main.QRfiles', panel_id=panel_id)
-    
-    return render_template('QR_dataview.html', my_bucket=my_bucket, files=summaries, panel_id=panel_id, panel_name=panel_name, form=form )
- ####   
-
-
-
-
 
     
 #register customer
@@ -171,11 +188,7 @@ def login():
                 session['company_id']=user.company
                 session['name']=user.name
                 flash('Welcome!')
-                msg = Message(subject="Successful login",
-                      sender=("main@scanmatics.com"),
-                      recipients=["andres.chapa@iidm.com"], # replace with your email for testing
-                      body="This is a test email I sent with Gmail and Python!")
-                mail.send(msg)
+                
                 return redirect(url_for('main.main'))
             else:
                 error= 'Invalid username, company name, or password.'
