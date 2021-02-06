@@ -91,7 +91,7 @@ def QRlink(panel_id):
     summaries=my_bucket.objects.filter(Prefix=f'{PANEL_ID}/')
     
     
-    return render_template('QR_dataview_emailed.html', my_bucket=my_bucket, files=summaries, panel_id=panel_id, panel_name=panel_name, )
+    return render_template('QR_dataview_Emailed.html', my_bucket=my_bucket, files=summaries, panel_id=panel_id, panel_name=panel_name, )
 
 
 @main_blueprint.route('/QRfiles/<int:panel_id>/')
@@ -127,7 +127,7 @@ def emailQRlink(panel_id):
             msg = Message(subject=f"Link to {panel_name} data ",
                         sender=("main@scanmatics.com"),
                         recipients=[request.form['email']]) 
-            msg.body=f'''Click <a href=f"https://gentle-refuge-43155.herokuapp.com/QRlink/{panel_id}/">here</a> to view panel documents.'''
+            msg.body=f'''Click <a href="https://gentle-refuge-43155.herokuapp.com/QRlink/{panel_id}/">here</a> to view panel documents.'''
             mail.send(msg)
             flash('Email has been sent')
             return redirect(url_for('main.QRfiles', panel_id=panel_id))
