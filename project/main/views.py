@@ -127,7 +127,7 @@ def emailQRlink(panel_id):
             msg = Message(subject=f"Link to {panel_name} data ",
                         sender=("main@scanmatics.com"),
                         recipients=[request.form['email']]) 
-            msg.body=f'''Click <a href="https://gentle-refuge-43155.herokuapp.com/QRlink/{panel_id}/">here</a> to view panel documents.'''
+            msg.body=f'''"https://gentle-refuge-43155.herokuapp.com/QRlink/{panel_id}/" '''
             mail.send(msg)
             flash('Email has been sent')
             return redirect(url_for('main.QRfiles', panel_id=panel_id))
