@@ -80,7 +80,6 @@ def QRmain(QR_id):
 
 ###
 @main_blueprint.route('/QRfiles/<int:panel_id>/')
-@login_required
 def QRfiles(panel_id):
     qrcode=QRcode.query.filter_by(panel_id=panel_id).first()
     if qrcode is None:
