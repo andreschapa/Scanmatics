@@ -40,7 +40,6 @@ If you did not make this request then simply ignore this email and no changes wi
 
 #register QR code
 @main_blueprint.route('/QRmain/<int:QR_id>', methods=['GET', 'POST'])
-@login_required
 def QRmain(QR_id):
     QR_id=QR_id
     error=None
@@ -243,7 +242,7 @@ def delete_customer(customer_id):
     return redirect(url_for('main.main'))
 
 
-@main_blueprint.route('/projects/<int:customer_id>') ##return <int: customer_id>
+@main_blueprint.route('/projects/#<int:customer_id>') ##return <int: customer_id>
 @login_required
 def projects(customer_id):
     
