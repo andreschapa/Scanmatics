@@ -16,6 +16,17 @@ import os
 S3_BUCKET=os.environ.get('S3_BUCKET')
 s3=boto3.client('s3')
 
+def login_required(test):
+    @wraps(test)
+    def wrap(*args, **kwargs):
+        if 'logged_in' in session:
+            return test(*args, **kwargs)
+        else:
+            flash('You need to login first.')
+            return redirect(url_for('main.login'))
+    return wrap
+
+
 def send_reset_email(user):
     token = user.get_reset_token()
     msg = Message('Password Reset Request',
@@ -159,17 +170,6 @@ def register():
                 return render_template('register.html', form=form, error=error)
     return render_template('register.html', form=form, error=error)
 
-
-
-def login_required(test):
-    @wraps(test)
-    def wrap(*args, **kwargs):
-        if 'logged_in' in session:
-            return test(*args, **kwargs)
-        else:
-            flash('You need to login first.')
-            return redirect(url_for('main.login'))
-    return wrap
 
 
 @main_blueprint.route('/logout/')
