@@ -105,7 +105,7 @@ def QRlink(panel_id):
     return render_template('QR_dataview_Emailed.html', my_bucket=my_bucket, files=summaries, panel_id=panel_id, panel_name=panel_name, )
 
 
-@main_blueprint.route('/QRfiles/<int:panel_id>/')
+@main_blueprint.route('/QRfiles/#<int:panel_id>/')
 def QRfiles(panel_id):
     qrcode=QRcode.query.filter_by(panel_id=panel_id).first()
     form=SendEmailLink(request.form)
