@@ -242,7 +242,7 @@ def delete_customer(customer_id):
     return redirect(url_for('main.main'))
 
 
-@main_blueprint.route('/##projects/<int:customer_id>') ##return <int: customer_id>
+@main_blueprint.route('/#projects/<int:customer_id>') ##return <int: customer_id>
 @login_required
 def projects(customer_id):
     
