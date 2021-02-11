@@ -446,8 +446,8 @@ def QRupload(panel_id):
     return redirect(url_for('main.QRfiles', panel_id=panel_id))
 
 
-@main_blueprint.route('/QRlinkedupload/<int:panel_id>/', methods=['POST'])
-def QRlinkedupload(panel_id):
+@main_blueprint.route('/QRlinkupload/<int:panel_id>/', methods=['POST'])
+def QRlinkupload(panel_id):
     file=request.files['file']
     panels=Panel.query.filter_by(panel_id=panel_id).first()
     panel_id=panels.panel_id
