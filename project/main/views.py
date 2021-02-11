@@ -426,6 +426,46 @@ def download(panel_id):
     )
 
 
+@main_blueprint.route('/QRupload/<int:panel_id>/', methods=['POST'])
+def QRupload(panel_id):
+    file=request.files['file']
+    panels=Panel.query.filter_by(panel_id=panel_id).first()
+    panel_id=panels.panel_id
+    
+    PANEL_ID=str(panel_id) #added this
+    
+    key= f"{PANEL_ID}/"+file.filename
+
+
+    s3_resource=boto3.resource('s3')
+    my_bucket=s3_resource.Bucket(S3_BUCKET)
+    my_bucket.Object(file.filename).put(Body=file, Key=key)
+
+    flash('File uploaded successfully')
+
+    return redirect(url_for('main.QRfiles', panel_id=panel_id))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 @main_blueprint.route('/reset_password', methods=['GET', 'POST'])
 def reset_request():
