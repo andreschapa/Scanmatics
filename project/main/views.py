@@ -394,7 +394,7 @@ def delete(panel_id):
     return redirect(url_for('main.files', panel_id=panel_id))
 
 @main_blueprint.route('/QRdelete/<int:panel_id>', methods=['POST'])
-def delete(panel_id):
+def QRdelete(panel_id):
     key=request.form['key']
 
     panels=Panel.query.filter_by(panel_id=panel_id).first()

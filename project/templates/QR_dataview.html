@@ -43,7 +43,7 @@
         <tr>
           <td>{{f.key}}</td>
           <td>
-            <form class="delete-form" action="{{ url_for('main.delete', panel_id=panel_id) }}" method ="post">
+            <form class="delete-form" action="{{ url_for('main.QRdelete', panel_id=panel_id) }}" method ="post">
               <input type="hidden" name="key" value= "{{ f.key }}">
               <button type="submit" class="btn btn-danger btn-sm">Delete</button>
             </form>
