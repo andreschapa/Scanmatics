@@ -393,6 +393,20 @@ def delete(panel_id):
     flash('File deleted successfully')
     return redirect(url_for('main.files', panel_id=panel_id))
 
+@main_blueprint.route('/QRdelete/<int:panel_id>', methods=['POST'])
+def delete(panel_id):
+    key=request.form['key']
+
+    panels=Panel.query.filter_by(panel_id=panel_id).first()
+    panel_id=panels.panel_id
+
+    s3_resource=boto3.resource('s3')
+    my_bucket=s3_resource.Bucket(S3_BUCKET)
+    my_bucket.Object(key).delete()
+
+    flash('File deleted successfully')
+    return redirect(url_for('main.QRfiles',panel_id=panel_id))
+
 @main_blueprint.route('/download/<int:panel_id>', methods=['POST'])
 def download(panel_id):
     panels=Panel.query.filter_by(panel_id=panel_id).first()
