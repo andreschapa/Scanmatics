@@ -41,6 +41,15 @@
           <td>
             <button type="submit" class="btn btn-default btn-sm"><a href="{{ url_for('main.panels', project_id = project.project_id) }}">Panels</a></button>
             <button type="submit" class="btn btn-danger btn-sm"><a href="{{ url_for('main.delete_project', project_id = project.project_id) }}" class="text-white">Delete</a></button>
+
+            <a href="{{ url_for('main.panels', project_id = project.project_id) }}">
+              <button type="submit" class="btn btn-default btn-sm">Panels</button>
+            </a>
+
+            <a href="{{ url_for('main.delete_project', project_id = project.project_id) }}" class="text-white">
+              <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+            </a>
+
           </td>
         </tr>
       {% endfor %}
