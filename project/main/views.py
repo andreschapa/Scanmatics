@@ -27,7 +27,7 @@ def login_required(test):
     return wrap
 
 
-@main_blueprint.route('/MaintenanceLogs/<int:panel_id>/')
+@main_blueprint.route('/MaintenanceLogs/#<int:panel_id>/')
 def MaintenanceLogs(panel_id):
     return render_template('QR_dataview_logs.html')
 
