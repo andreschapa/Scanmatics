@@ -29,7 +29,7 @@ def login_required(test):
 
 @main_blueprint.route('/MaintenanceLogs/<int:panel_id>/')
 def MaintenanceLogs(panel_id):
-    return render_template('QR_dataview_logs')
+    return render_template('QR_dataview_logs.html')
 
 
 def send_reset_email(user):
