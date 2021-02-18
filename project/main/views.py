@@ -32,17 +32,6 @@ def MaintenanceLogs(panel_id):
     return render_template('QR_dataview_logs.html')
 
 
-def send_reset_email(user):
-    token = user.get_reset_token()
-    msg = Message('Password Reset Request',
-                  sender='main@scanmatics.com',
-                  recipients=[user.email])
-    msg.body = f'''To reset your password, visit the following link:
-{url_for('reset_token', token=token, _external=True)}
-If you did not make this request then simply ignore this email and no changes will be made.
-'''
-    mail.send(msg)
-
 #register QR code
 @main_blueprint.route('/QRmain/<int:QR_id>', methods=['GET', 'POST'])
 def QRmain(QR_id):
@@ -504,6 +493,16 @@ def reset_token(token):
         return redirect(url_for('main.login'))
     return render_template('reset_token.html', title='Reset Password',form= form)
 
+def send_reset_email(user):
+    token = user.get_reset_token()
+    msg = Message('Password Reset Request',
+                  sender='main@scanmatics.com',
+                  recipients=[user.email])
+    msg.body = f'''To reset your password, visit the following link:
+{url_for('reset_token', token=token, _external=True)}
+If you did not make this request then simply ignore this email and no changes will be made.
+'''
+    mail.send(msg)
 
 
 

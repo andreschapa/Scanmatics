@@ -104,7 +104,25 @@ class QRcode(db.Model):
     def __repr__(self):
         return '<name {0}>'.format(self.name)
 
+#Maintenance logs model
 
+#class MaintenanceLogs(db.Model):
+
+ #   __tablename__ = "MaintenanceLogs"
+
+  #  MaintenanceLog_id = db.Column(db.Integer, primary_key=True)
+  #  maintenance_issue= db.Column(db.Column, nullable=False)
+  #  action_taken= db.Column(db.Column, nullable=True)
+  #  posted_date = db.Column(db.Date, default=datetime.datetime.utcnow())
+    
+
+  #  def __init__(self, issue, issue_details, posted_date):
+  #      self.maintenance_issue= maintenance_issue
+  #      self.action_taken = action_taken
+  #      self.posted_date = posted_date
+
+  #  def __repr__(self):
+  #      return '<name {0}>'.format(self.name)
     
 
 
