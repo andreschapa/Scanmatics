@@ -6,7 +6,7 @@ from flask import Flask, flash, redirect, render_template, \
 request, session, url_for, Response, Blueprint
 from sqlalchemy.exc import IntegrityError
 from flask_mail import Message, Mail
-from project.models import Customer, User, Project, Panel, QRcode
+from project.models import Customer, User, Project, Panel, QRcode, MaintenanceLogs
 from project import db, bcrypt , mail
 main_blueprint= Blueprint('main', __name__)
 
