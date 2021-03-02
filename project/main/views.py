@@ -28,21 +28,24 @@ def login_required(test):
     return wrap
 
 ########################### Maintenance Logs ##############################################
-def open_logs(panel_id):
-    return db.session.query(MaintenanceLogs).filter_by(panel_id=panel_id).order_by(MaintenanceLogs.priority.desc())
+#def open_logs(panel_id):
+   # return db.session.query(MaintenanceLogs).filter_by(panel_id=panel_id).order_by(MaintenanceLogs.priority.desc())
 
 
-def closed_logs(panel_id):
-    return db.session.query(MaintenanceLogs).filter_by(panel_id=panel_id).order_by(MaintenanceLogs.posted_date.asc())
+#def closed_logs(panel_id):
+    #return db.session.query(MaintenanceLogs).filter_by(panel_id=panel_id).order_by(MaintenanceLogs.posted_date.asc())
 
 
 @main_blueprint.route('/MaintenanceLogs/#<int:panel_id>/')
 def MaintenanceLogs(panel_id):
+    open_logs=db.session.query(MaintenanceLogs).filter_by(MaintenanceLog_panel_id=panel_id, status='1').order_by(MaintenanceLogs.priority.desc())
+    closed_logs=db.session.query(MaintenanceLogs).filter_by(MaintenanceLog_panel_id=panel_id, status='0').order_by(MaintenanceLogs.priority.desc())
+
     return render_template(
         'QR_dataview_logs.html',
         form=AddMaintenanceLog(request.form),
-        open_logs=open_logs(panel_id),
-        closed_logs=closed_logs(panel_id)
+        open_logs=open_logs,
+        closed_logs=closed_logs
     )
     
 @main_blueprint.route('/NewMaintenanceLog/#<int:panel_id>/', methods=['GET','POST'])

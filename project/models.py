@@ -112,7 +112,7 @@ class MaintenanceLogs(db.Model):
     __tablename__ = "MaintenanceLogs"
 
     MaintenanceLog_id = db.Column(db.Integer, primary_key=True)
-    MaintenanceLog_panel_id=db.Column(db.Integer, db.ForeignKey('panels.panel_id'))
+    MaintenanceLog_panel_id= db.Column(db.Integer, db.ForeignKey('panels.panel_id'))
     maintenance_issue= db.Column(db.String, nullable=False)
     action_taken= db.Column(db.String, nullable=True)
     posted_date = db.Column(db.Date, default=datetime.datetime.utcnow())
