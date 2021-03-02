@@ -1,6 +1,7 @@
 from flask_wtf import Form
 from wtforms import StringField, DateField, IntegerField, SelectField, PasswordField, SubmitField
 from wtforms.validators import DataRequired, Length, EqualTo, Email
+import datetime
 
 class RegisterQRForm(Form):
 
@@ -69,12 +70,25 @@ class ResetPasswordForm(Form):
         validators=[DataRequired(), EqualTo('password', message='Passwords must match')])
     submit=SubmitField('Reset Password')
     
-    
+
 class SendEmailLink(Form):
     email= StringField(
         'Email',
         validators=[DataRequired(), Email(), Length(min=6, max=40)])
-    
+
+class AddMaintenanceLog(Form):
+    MaintenanceLog_id = IntegerField()
+    maintenance_issue = StringField('Maintenance Issue', validators=[DataRequired()])
+    action_taken= StringField('Action Taken', validators=[DataRequired()]) # might have to get rid of validators since this can be nullable
+    priority = SelectField(
+        'Priority',
+        validators=[DataRequired()],
+        choices=[
+            ('1', '1'), ('2', '2'), ('3', '3'), ('4', '4'), ('5', '5'),
+            ('6', '6'), ('7', '7'), ('8', '8'), ('9', '9'), ('10', '10')
+        ]
+    )
+    status = IntegerField('Status')
 
 
 

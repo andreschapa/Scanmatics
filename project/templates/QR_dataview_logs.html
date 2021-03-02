@@ -2,33 +2,123 @@
 {% block content %}
 <img src=https://media-exp1.licdn.com/dms/image/C4E0BAQH9ry_VPEPBPw/company-logo_200_200/0/1609696203090?e=1617840000&v=beta&t=zZvbSC0Zr3i8zwrTiRD5o6XwapPBs4lByvXKSOJi6ZA>
 
-<div class="container">
-    <h2>Modal Example</h2>
-    <!-- Trigger the modal with a button -->
-    <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#myModal">Open Modal</button>
-  
-    <!-- Modal -->
-    <div class="modal fade" id="myModal" role="dialog">
-      <div class="modal-dialog">
+
+
+<h1>Maintenance Logs</h1>
+<br>
+<div class="add-task">
+  <h3>Create Maintenance Log</h3>
+    <form action="{{ url_for('main.new_MaintenanceLog') }}" method="post">
+      {{ form.csrf_token }}
+      <p>
+      {{ form.maintenance_issue(placeholder="Maintenance Issue") }}
+      </p>
+      <p>
+      {{ form.priority.label }}
+      {{ form.priority }}
       
-        <!-- Modal content-->
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal">&times;</button>
-            <h4 class="modal-title">Maintenance Performed</h4>
-          </div>
-          <div class="modal-body">
-            <p>This will be a form to input text</p>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-default" data-dismiss="modal">Save</button>
-          </div>
-        </div>
-        
-      </div>
-    </div>
+      </p>
+      <p><input class="btn btn-default" type="submit" value="Submit"></p>
+    </form>
 </div>
+<div class="entries">
+  <br>
+  <br>
+  <h2>Open Maintenance Logs:</h2>
+  <div class="datagrid">
+    <table>
+      <thead>
+        <tr>
+          <th width="200px"><strong>Maintenance Issue</strong></th>
+          <th width="100px"><strong>Posted Date</strong></th>
+          <th width="50px"><strong>Priority</strong></th>
+          <th><strong>Actions</strong></th>
+        </tr>
+      </thead>
+      {% for MaintenanceLogs in open_logs %}
+        <tr>
+          <td>{{ MaintenanceLogs.maintenance_issue }}</td>
+          <td>{{ MaintenanceLogs.posted_date }}</td>
+          <td>{{ MaintenanceLogs.priority }}</td>
+          <td>
+
+              <a href="{{ url_for('main.delete_MaintenanceLog', MaintenanceLog_id = MaintenanceLogs.MaintenanceLogs_id) }}">
+                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+              </a>
+              
+              <div class="container">
+                <h4>Modal Example</h4>
+                <!-- Trigger the modal with a button -->
+                <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#myModal">Complete Maintenance Log</button>
+              
+                <!-- Modal -->
+                <div class="modal fade" id="myModal" role="dialog">
+                  <div class="modal-dialog">
+                  
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Maintenance Performed</h4>
+                      </div>
+                      <div class="modal-body">
+                        <form action="{{ url_for('main.complete_MaintenanceLog', MaintenanceLog_id=MaintenanceLogs.MaintenanceLogs_id ) }}" method="post">
+                          {{ form.csrf_token }}
+                          <p>
+                          
+                          {{ form.action_taken.label }}
+                          {{ form.action_taken }}
+                          
+                          </p>
+                          <p><input class="btn btn-default" type="submit" value="Submit"></p>
+                        </form>
+                      </div>
+                      <div class="modal-footer">
+                        <p><input class="btn btn-default" type="submit" value="Submit"></p>
+                      </div>
+                    </div>
+                    
+                  </div>
+                </div>
+            </div>
+  
+          </td>
+        </tr>
+      {% endfor %}
+    </table>
+  </div>
+</div>
+<br>
+<br>
+<div class="entries">
+  <h2>Closed Maintenance Logs</h2>
+  <div class="datagrid">
+    <table>
+      <thead>
+        <tr>
+            <th width="200px"><strong>Maintenance Issue</strong></th>
+            <th width="200px"><strong>Action Taken</strong></th>
+            <th width="100px"><strong>Posted Date</strong></th>
+            <th width="50px"><strong>Priority</strong></th>
+            <th><strong>Actions</strong></th>
+        </tr>
+      </thead>
+      {% for task in closed_logs %}
+        <tr>
+            <td>{{ MaintenanceLogs.maintenance_issue }}</td>
+            <td>{{ MaintenanceLogs.action_taken }}</td>
+            <td>{{ MaintenanceLogs.posted_date }}</td>
+            <td>{{ MaintenanceLogs.priority }}</td>
+          <td>
+            <a href="{{ url_for('main.delete_MaintenanceLog', MaintenanceLog_id = MaintenanceLogs.MaintenanceLogs_id) }}">Delete</a>
+          </td>
+        </tr>
+      {% endfor %}
+    </table>
+  </div>
+</div>
+
+
 
 {% endblock %}
 

@@ -12,6 +12,7 @@ main_blueprint= Blueprint('main', __name__)
 
 import boto3
 import os
+import datetime
 
 S3_BUCKET=os.environ.get('S3_BUCKET')
 s3=boto3.client('s3')
@@ -26,10 +27,78 @@ def login_required(test):
             return redirect(url_for('main.login'))
     return wrap
 
+########################### Maintenance Logs ##############################################
+def open_logs(panel_id):
+    return db.session.query(MaintenanceLogs).filter_by(
+        status='1', panel_id=panel_id).order_by(MaintenanceLogs.priority.desc())
+
+
+def closed_logs(panel_id):
+    return db.session.query(MaintenanceLogs).filter_by(
+        status='0', panel_id=panel_id).order_by(MaintenanceLogs.posted_date.asc())
+
 
 @main_blueprint.route('/MaintenanceLogs/#<int:panel_id>/')
 def MaintenanceLogs(panel_id):
-    return render_template('QR_dataview_logs.html')
+    return render_template(
+        'QR_dataview_logs.html',
+        form=AddMaintenanceLog(request.form),
+        open_logs=open_logs(),
+        closed_logs=closed_logs()
+    )
+    
+@main_blueprint.route('/NewMaintenanceLog/#<int:panel_id>/', methods=['GET','POST'])
+def new_MaintenanceLog(panel_id):
+    error=None
+    panel_id=panel_id
+    form=AddMaintenanceLog(request.form)
+    if request.method == 'POST':
+        new_maintenanceLog=MaintenanceLogs(
+            form.maintenance_issue.data,
+            form.priority.data,
+            datetime.datetime.utcnow(),
+            '1'
+        )
+        db.session.add(new_MaintenanceLog)
+        db.session.commit()
+        flash('Maintenance log created successfully.')
+        return redirect(url_for('main.MaintenanceLogs', panel_id=panel_id))
+    return render_template(
+        'QR_dataview_logs.html',
+        form=AddMaintenanceLog(request.form),
+        open_logs=open_logs(),
+        closed_logs=closed_logs()
+    )
+
+@main_blueprint.route('/complete/#<int:MaintenanceLog_id>/', methods=['GET','POST'])
+def complete_MaintenanceLog(MaintenanceLog_id):
+    error=None
+    New_id=MaintenanceLog_id
+    form=AddMaintenanceLog(request.form)
+    maintenancelog=db.session.query(MaintenanceLogs).filter_by(MaintenanceLog_id=New_id)
+    panel_id=maintenancelog.MaintenanceLog_panel_id
+    if request.method=='POST':
+        maintenancelog.update({"status": "0"})
+        maintenancelog.update({"action_taken": f"{form.action_taken.data}"})
+        db.session.commit()
+        flash('Maintenance log completed.')
+        return redirect(url_for('main.MaintenanceLogs', panel_id=panel_id))
+
+@main_blueprint.route('/deleteMaintenancelog/<int:MaintenanceLog_id>/')
+def delete_MaintenanceLog(MaintenanceLog_id):
+    New_id=MaintenanceLog_id
+    maintenancelog=db.session.query(MaintenanceLogs).filter_by(MaintenanceLog_id=New_id)
+    panel_id=maintenancelog.MaintenanceLog_panel_id
+    maintenancelog.delete()
+    db.session.commit()
+    flash('The maintenance log was deleted.')
+    return redirect(url_for('main.MaintenanceLogs', panel_id=panel_id))
+
+
+
+
+
+##########################################################################################################################################
 
 
 #register QR code

@@ -77,6 +77,7 @@ class Panel(db.Model):
     name=db.Column(db.String, nullable=False)
     panel_project_id=db.Column(db.Integer, db.ForeignKey('projects.project_id'))
     panel_project_customer_id=db.Column(db.Integer, db.ForeignKey('customers.customer_id'))
+    logs=db.relationship('MaintenanceLogs', backref='logs')
     
 
     def __init__(self, name, panel_project_id, panel_project_customer_id):
@@ -106,23 +107,28 @@ class QRcode(db.Model):
 
 #Maintenance logs model
 
-#class MaintenanceLogs(db.Model):
+class MaintenanceLogs(db.Model):
 
- #   __tablename__ = "MaintenanceLogs"
+    __tablename__ = "MaintenanceLogs"
 
-  #  MaintenanceLog_id = db.Column(db.Integer, primary_key=True)
-  #  maintenance_issue= db.Column(db.Column, nullable=False)
-  #  action_taken= db.Column(db.Column, nullable=True)
-  #  posted_date = db.Column(db.Date, default=datetime.datetime.utcnow())
+    MaintenanceLog_id = db.Column(db.Integer, primary_key=True)
+    MaintenanceLog_panel_id=db.Column(db.Integer, db.ForeignKey('panels.panel_id'))
+    maintenance_issue= db.Column(db.Column, nullable=False)
+    action_taken= db.Column(db.Column, nullable=True)
+    posted_date = db.Column(db.Date, default=datetime.datetime.utcnow())
+    priority = db.Column(db.Integer, nullable=False)
+    status = db.Column(db.Integer)
     
 
-  #  def __init__(self, issue, issue_details, posted_date):
-  #      self.maintenance_issue= maintenance_issue
-  #      self.action_taken = action_taken
-  #      self.posted_date = posted_date
+    def __init__(self, maintenance_issue, action_taken, posted_date, priority, status):
+        self.maintenance_issue= maintenance_issue
+        self.action_taken = action_taken
+        self.posted_date = posted_date
+        self.priority= priority
+        self.status= status
 
-  #  def __repr__(self):
-  #      return '<name {0}>'.format(self.name)
+    def __repr__(self):
+        return '<name {0}>'.format(self.name)
     
 
 
