@@ -28,12 +28,12 @@ def login_required(test):
     return wrap
 
 ########################### Maintenance Logs ##############################################
-def open_logs(panel_id):
-    return db.session.query(MaintenanceLogs).filter(status='1', panel_id=panel_id).order_by(MaintenanceLogs.priority.desc())
+def open_logs():
+    return db.session.query(MaintenanceLogs).filter_by(status='1',).order_by(MaintenanceLogs.priority.desc())
 
 
-def closed_logs(panel_id):
-    return db.session.query(MaintenanceLogs).filter(status='0', panel_id=panel_id).order_by(MaintenanceLogs.posted_date.asc())
+def closed_logs():
+    return db.session.query(MaintenanceLogs).filter_by(status='0').order_by(MaintenanceLogs.posted_date.asc())
 
 
 @main_blueprint.route('/MaintenanceLogs/#<int:panel_id>/')
