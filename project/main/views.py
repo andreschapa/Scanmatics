@@ -129,7 +129,7 @@ def QRmain(QR_id):
             
             if panel is not None and panel.name == request.form['panel_name']: #and panel.panel_id == request.form['panel_id'] and panel.project_id == request.form['project_id']:
                
-
+                panel_id=panel_id
                 new_QR= QRcode(
                 form.panel_id.data,
                 form.end_user.data,

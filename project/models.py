@@ -108,9 +108,7 @@ class QRcode(db.Model):
 #Maintenance logs model
 
 class MaintenanceLogs(db.Model):
-
     __tablename__ = "MaintenanceLogs"
-
     MaintenanceLog_id = db.Column(db.Integer, primary_key=True)
     MaintenanceLog_panel_id= db.Column(db.Integer, db.ForeignKey('panels.panel_id'))
     maintenance_issue= db.Column(db.String, nullable=False)
@@ -120,7 +118,7 @@ class MaintenanceLogs(db.Model):
     status = db.Column(db.Integer)
     
 
-    def __init__(self, maintenance_issue, action_taken, posted_date, priority, status):
+    def __init__(self, maintenance_issue=None, action_taken=None, posted_date=None, priority=None, status=None):
         self.maintenance_issue= maintenance_issue
         self.action_taken = action_taken
         self.posted_date = posted_date
