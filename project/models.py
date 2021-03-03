@@ -107,8 +107,8 @@ class QRcode(db.Model):
 
 #Maintenance logs model
 
-class MaintenanceLogs(db.Model):
-    __tablename__ = "MaintenanceLogs"
+class Maintenance_Logs(db.Model):
+    __tablename__ = "Maintenance_Logs"
     MaintenanceLog_id = db.Column(db.Integer, primary_key=True)
     MaintenanceLog_panel_id= db.Column(db.Integer, db.ForeignKey('panels.panel_id'))
     maintenance_issue= db.Column(db.String, nullable=False)

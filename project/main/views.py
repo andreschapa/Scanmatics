@@ -6,7 +6,7 @@ from flask import Flask, flash, redirect, render_template, \
 request, session, url_for, Response, Blueprint
 from sqlalchemy.exc import IntegrityError
 from flask_mail import Message, Mail
-from project.models import Customer, User, Project, Panel, QRcode, MaintenanceLogs
+from project.models import Customer, User, Project, Panel, QRcode, Maintenance_Logs
 from project import db, bcrypt , mail
 main_blueprint= Blueprint('main', __name__)
 
@@ -38,8 +38,8 @@ def login_required(test):
 
 @main_blueprint.route('/MaintenanceLogs/#<int:panel_id>/')
 def MaintenanceLogs(panel_id):
-    open_logs=db.session.query(MaintenanceLogs).filter_by(MaintenanceLog_panel_id=panel_id, status='1').order_by(MaintenanceLogs.priority.desc())
-    closed_logs=db.session.query(MaintenanceLogs).filter_by(MaintenanceLog_panel_id=panel_id, status='0').order_by(MaintenanceLogs.priority.desc())
+    open_logs=db.session.query(Maintenance_Logs).filter_by(MaintenanceLog_panel_id=panel_id, status='1').order_by(Maintenance_Logs.priority.desc())
+    closed_logs=db.session.query(Maintenance_Logs).filter_by(MaintenanceLog_panel_id=panel_id, status='0').order_by(Maintenance_Logs.priority.desc())
 
     return render_template(
         'QR_dataview_logs.html',
@@ -54,7 +54,7 @@ def new_MaintenanceLog(panel_id):
     panel_id=panel_id
     form=AddMaintenanceLog(request.form)
     if request.method == 'POST':
-        new_maintenanceLog=MaintenanceLogs(
+        new_maintenanceLog=Maintenance_Logs(
             form.maintenance_issue.data,
             form.priority.data,
             datetime.datetime.utcnow(),
@@ -64,12 +64,8 @@ def new_MaintenanceLog(panel_id):
         db.session.commit()
         flash('Maintenance log created successfully.')
         return redirect(url_for('main.MaintenanceLogs', panel_id=panel_id))
-    return render_template(
-        'QR_dataview_logs.html',
-        form=AddMaintenanceLog(request.form),
-        open_logs=open_logs(),
-        closed_logs=closed_logs()
-    )
+    
+
 
 @main_blueprint.route('/complete/#<int:MaintenanceLog_id>/', methods=['GET','POST'])
 def complete_MaintenanceLog(MaintenanceLog_id):
