@@ -77,7 +77,7 @@ class Panel(db.Model):
     name=db.Column(db.String, nullable=False)
     panel_project_id=db.Column(db.Integer, db.ForeignKey('projects.project_id'))
     panel_project_customer_id=db.Column(db.Integer, db.ForeignKey('customers.customer_id'))
-    logs=db.relationship('MaintenanceLogs', backref='logs')
+    logs=db.relationship('Maintenance_Logs', backref='logs')
     
 
     def __init__(self, name, panel_project_id, panel_project_customer_id):
