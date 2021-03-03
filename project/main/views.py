@@ -55,16 +55,17 @@ def new_MaintenanceLog(panel_id):
     panel_id=panel_id
     form=AddMaintenanceLog(request.form)
     if request.method == 'POST':
-        new_MaintenanceLog=Maintenance_Logs(
+         if form.validate_on_submit():
+            new_MaintenanceLog=Maintenance_Logs(
             form.maintenance_issue.data,
             form.priority.data,
             datetime.datetime.utcnow(),
             '1'
-        )
-        db.session.add(new_MaintenanceLog)
-        db.session.commit()
-        flash('Maintenance log created successfully.')
-        return redirect(url_for('main.MaintenanceLogs', panel_id=panel_id))
+            )
+            db.session.add(new_MaintenanceLog)
+            db.session.commit()
+            flash('Maintenance log created successfully.')
+            return redirect(url_for('main.MaintenanceLogs', panel_id=panel_id))
     
 
 
