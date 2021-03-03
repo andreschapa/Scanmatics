@@ -55,7 +55,7 @@ def new_MaintenanceLog(panel_id):
     panel_id=panel_id
     form=AddMaintenanceLog(request.form)
     if request.method == 'POST':
-        new_maintenanceLog=Maintenance_Logs(
+        new_MaintenanceLog=Maintenance_Logs(
             form.maintenance_issue.data,
             form.priority.data,
             datetime.datetime.utcnow(),
@@ -73,7 +73,7 @@ def complete_MaintenanceLog(MaintenanceLog_id):
     error=None
     New_id=MaintenanceLog_id
     form=AddMaintenanceLog(request.form)
-    maintenancelog=db.session.query(MaintenanceLogs).filter_by(MaintenanceLog_id=New_id)
+    maintenancelog=db.session.query(Maintenance_Logs).filter_by(MaintenanceLog_id=New_id)
     panel_id=maintenancelog.MaintenanceLog_panel_id
     if request.method=='POST':
         maintenancelog.update({"status": "0"})
@@ -85,7 +85,7 @@ def complete_MaintenanceLog(MaintenanceLog_id):
 @main_blueprint.route('/deleteMaintenancelog/<int:MaintenanceLog_id>/')
 def delete_MaintenanceLog(MaintenanceLog_id):
     New_id=MaintenanceLog_id
-    maintenancelog=db.session.query(MaintenanceLogs).filter_by(MaintenanceLog_id=New_id)
+    maintenancelog=db.session.query(Maintenance_Logs).filter_by(MaintenanceLog_id=New_id)
     panel_id=maintenancelog.MaintenanceLog_panel_id
     maintenancelog.delete()
     db.session.commit()
