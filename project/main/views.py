@@ -137,7 +137,7 @@ def QRmain(QR_id):
                     db.session.add(new_QR)
                     db.session.commit()
                     flash('Thanks for registering QR code.')
-                    return redirect(url_for('main.QRfiles', panel_id=panel_id)) #### change this to the QR URL
+                    return redirect(url_for('main.login')) #### change this to the QR URL
                 except IntegrityError: #Verify integrity error works for other shit besides email
                     error= 'That panel ID has already been linked to a QR code.'
                     return render_template('QR_register.html', form=form, error=error)
