@@ -38,7 +38,7 @@ def login_required(test):
 
 @main_blueprint.route('/MaintenanceLogs/#<int:panel_id>/')
 def MaintenanceLogs(panel_id):
-    open_logs=db.session.query(Maintenance_Logs).filter_by(MaintenanceLog_panel_id=panel_id, status='1').order_by(Maintenance_Logs.priority.desc())
+    open_logs=db.session.query(Maintenance_Logs).filter_by(status='1').order_by(Maintenance_Logs.priority.desc())
     closed_logs=db.session.query(Maintenance_Logs).filter_by(MaintenanceLog_panel_id=panel_id, status='0').order_by(Maintenance_Logs.priority.desc())
 
     return render_template(

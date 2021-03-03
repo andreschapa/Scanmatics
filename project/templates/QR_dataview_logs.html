@@ -24,7 +24,7 @@
 <div class="entries">
   <br>
   <br>
-  <h2>Open Maintenance Logs:</h2>
+  <h2>Open Maintenance Logs</h2>
   <div class="datagrid">
     <table>
       <thead>
@@ -103,7 +103,7 @@
             <th><strong>Actions</strong></th>
         </tr>
       </thead>
-      {% for task in closed_logs %}
+      {% for MaintenanceLogs in closed_logs %}
         <tr>
             <td>{{ MaintenanceLogs.maintenance_issue }}</td>
             <td>{{ MaintenanceLogs.action_taken }}</td>
