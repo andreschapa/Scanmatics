@@ -35,14 +35,14 @@
           <th><strong>Actions</strong></th>
         </tr>
       </thead>
-      {% for MaintenanceLogs in open_logs %}
+      {% for ML in open_logs %}
         <tr>
-          <td>{{ MaintenanceLogs.maintenance_issue }}</td>
-          <td>{{ MaintenanceLogs.posted_date }}</td>
-          <td>{{ MaintenanceLogs.priority }}</td>
+          <td>{{ ML.maintenance_issue }}</td>
+          <td>{{ ML.posted_date }}</td>
+          <td>{{ ML.priority }}</td>
           <td>
 
-              <a href="{{ url_for('main.delete_MaintenanceLog', MaintenanceLog_id = MaintenanceLogs.MaintenanceLogs_id) }}">
+              <a href="{{ url_for('main.delete_MaintenanceLog', MaintenanceLog_id = ML.MaintenanceLogs_id) }}">
                 <button type="submit" class="btn btn-danger btn-sm">Delete</button>
               </a>
               
@@ -103,14 +103,14 @@
             <th><strong>Actions</strong></th>
         </tr>
       </thead>
-      {% for MaintenanceLogs in closed_logs %}
+      {% for ML in closed_logs %}
         <tr>
-            <td>{{ MaintenanceLogs.maintenance_issue }}</td>
-            <td>{{ MaintenanceLogs.action_taken }}</td>
-            <td>{{ MaintenanceLogs.posted_date }}</td>
-            <td>{{ MaintenanceLogs.priority }}</td>
+            <td>{{ ML.maintenance_issue }}</td>
+            <td>{{ ML.action_taken }}</td>
+            <td>{{ ML.posted_date }}</td>
+            <td>{{ ML.priority }}</td>
           <td>
-            <a href="{{ url_for('main.delete_MaintenanceLog', MaintenanceLog_id = MaintenanceLogs.MaintenanceLogs_id) }}">Delete</a>
+            <a href="{{ url_for('main.delete_MaintenanceLog', MaintenanceLog_id = ML.MaintenanceLogs_id) }}">Delete</a>
           </td>
         </tr>
       {% endfor %}
