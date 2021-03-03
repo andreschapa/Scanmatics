@@ -45,7 +45,8 @@ def MaintenanceLogs(panel_id):
         'QR_dataview_logs.html',
         form=AddMaintenanceLog(request.form),
         open_logs=open_logs,
-        closed_logs=closed_logs
+        closed_logs=closed_logs,
+        panel_id=panel_id
     )
     
 @main_blueprint.route('/NewMaintenanceLog/#<int:panel_id>/', methods=['GET','POST'])

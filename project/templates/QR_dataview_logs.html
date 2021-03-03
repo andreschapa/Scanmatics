@@ -8,7 +8,7 @@
 <br>
 <div class="add-task">
   <h3>Create Maintenance Log</h3>
-    <form action="{{ url_for('main.new_MaintenanceLog') }}" method="post">
+    <form action="{{ url_for('main.new_MaintenanceLog', panel_id=panel_id) }}" method="post">
       {{ form.csrf_token }}
       <p>
       {{ form.maintenance_issue(placeholder="Maintenance Issue") }}
