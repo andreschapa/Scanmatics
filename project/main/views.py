@@ -44,8 +44,8 @@ def MaintenanceLogs(panel_id):
     return render_template(
         'QR_dataview_logs.html',
         form=AddMaintenanceLog(request.form),
-        open_logs=open_logs(panel_id),
-        closed_logs=closed_logs(panel_id),
+        open_logs=open_logs(),
+        closed_logs=closed_logs(),
         panel_id=panel_id
     )
     
