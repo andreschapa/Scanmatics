@@ -110,7 +110,7 @@
             <td>{{ ML.posted_date }}</td>
             <td>{{ ML.priority }}</td>
           <td>
-            <a href="{{ url_for('main.delete_MaintenanceLog', MaintenanceLog_id = ML.MaintenanceLogs_id) }}">Delete</a>
+            <a href="{{ url_for('main.delete_MaintenanceLog', MaintenanceLog_id = ML.MaintenanceLog_id) }}">Delete</a>
           </td>
         </tr>
       {% endfor %}
