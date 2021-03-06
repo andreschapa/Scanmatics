@@ -55,7 +55,7 @@ def new_MaintenanceLog(panel_id):
     panel_id=panel_id
     form=AddMaintenanceLog(request.form)
     if request.method == 'POST':
-         if form.validate_on_submit():
+        if form.validate_on_submit():
             new_MaintenanceLog=Maintenance_Logs(
             form.maintenance_issue.data,
             form.priority.data,
@@ -65,14 +65,8 @@ def new_MaintenanceLog(panel_id):
             db.session.add(new_MaintenanceLog)
             db.session.commit()
             flash('Maintenance log created successfully.')
-            return redirect(url_for('main.MaintenanceLogs', panel_id=panel_id))
-    return render_template(
-        'QR_dataview_logs.html',
-        form=AddMaintenanceLog(request.form),
-        open_logs=open_logs(panel_id),
-        closed_logs=closed_logs(panel_id),
-        panel_id=panel_id
-    )
+    return redirect(url_for('main.MaintenanceLogs', panel_id=panel_id))
+    
     
     
 
