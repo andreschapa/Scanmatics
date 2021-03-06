@@ -61,7 +61,8 @@ def new_MaintenanceLog(panel_id):
             form.maintenance_issue.data,
             datetime.datetime.utcnow(),
             form.priority.data,
-            '1'
+            '1',
+            None
             )
             db.session.add(new_MaintenanceLog)
             db.session.commit()
