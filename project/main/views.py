@@ -57,7 +57,6 @@ def new_MaintenanceLog(panel_id):
     if request.method == 'POST':
         if form.validate_on_submit():
             new_MaintenanceLog=Maintenance_Logs(
-            
             form.maintenance_issue.data,
             datetime.datetime.utcnow(),
             form.priority.data,
