@@ -112,18 +112,19 @@ class Maintenance_Logs(db.Model):
     MaintenanceLog_id = db.Column(db.Integer, primary_key=True)
     MaintenanceLog_panel_id= db.Column(db.Integer, db.ForeignKey('panels.panel_id'))
     maintenance_issue= db.Column(db.String, nullable=False)
-    action_taken= db.Column(db.String, nullable=True)
     posted_date = db.Column(db.Date, default=datetime.datetime.utcnow())
     priority = db.Column(db.Integer, nullable=False)
     status = db.Column(db.Integer)
+    action_taken= db.Column(db.String, nullable=True)
     
 
     def __init__(self, maintenance_issue=None, action_taken=None, posted_date=None, priority=None, status=None):
+        self.MaintenanceLog_panel_id= MaintenanceLog_panel_id
         self.maintenance_issue= maintenance_issue
-        self.action_taken = action_taken
         self.posted_date = posted_date
         self.priority= priority
         self.status= status
+        self.action_taken = action_taken
 
     def __repr__(self):
         return '<name {0}>'.format(self.name)

@@ -80,7 +80,10 @@ class AddMaintenanceLog(Form):
     MaintenanceLog_id = IntegerField()
     MaintenanceLog_panel_id= IntegerField()
     maintenance_issue = StringField('Maintenance Issue', validators=[DataRequired()])
-    action_taken= StringField('Action Taken') # might have to get rid of validators since this can be nullable
+    posted_date=due_date = DateField(
+        'Posted Date ',
+        validators=[DataRequired()], format='%m/%d/%Y'
+    )
     priority = SelectField(
         'Priority',
         validators=[DataRequired()],
@@ -90,6 +93,7 @@ class AddMaintenanceLog(Form):
         ]
     )
     status = IntegerField('Status')
+    action_taken= StringField('Action Taken') # might have to get rid of validators since this can be nullable
 
 
 
