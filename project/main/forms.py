@@ -78,8 +78,9 @@ class SendEmailLink(Form):
 
 class AddMaintenanceLog(Form):
     MaintenanceLog_id = IntegerField()
+    MaintenanceLog_panel_id= IntegerField()
     maintenance_issue = StringField('Maintenance Issue', validators=[DataRequired()])
-    action_taken= StringField('Action Taken', validators=[DataRequired()]) # might have to get rid of validators since this can be nullable
+    action_taken= StringField('Action Taken') # might have to get rid of validators since this can be nullable
     priority = SelectField(
         'Priority',
         validators=[DataRequired()],
