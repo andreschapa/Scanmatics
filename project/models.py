@@ -118,7 +118,7 @@ class Maintenance_Logs(db.Model):
     action_taken= db.Column(db.String, nullable=True)
     
 
-    def __init__(self, maintenance_issue=None, action_taken=None, posted_date=None, priority=None, status=None):
+    def __init__(self, MaintenanceLog_panel_id= None, maintenance_issue=None, action_taken=None, posted_date=None, priority=None, status=None):
         self.MaintenanceLog_panel_id= MaintenanceLog_panel_id
         self.maintenance_issue= maintenance_issue
         self.posted_date = posted_date
