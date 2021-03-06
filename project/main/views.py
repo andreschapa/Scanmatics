@@ -82,8 +82,10 @@ def complete_MaintenanceLog(MaintenanceLog_id):
     maintenancelog=db.session.query(Maintenance_Logs).filter_by(MaintenanceLog_id=new_id).first()
     panel_id=maintenancelog.MaintenanceLog_panel_id
     if request.method=='POST':
-        maintenancelog.update({"status": "0"})
-        maintenancelog.update({"action_taken": f"{form.action_taken.data}"})
+        #maintenancelog.update({"status": "0"})
+        #maintenancelog.update({"action_taken": f"{form.action_taken.data}"})
+        maintenancelog.status='0'
+        maintenancelog.action_taken=f"{form.action_taken.data}"
         db.session.commit()
         flash('Maintenance log completed.')
         return redirect(url_for('main.MaintenanceLogs', panel_id=panel_id))
