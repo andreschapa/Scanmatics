@@ -40,7 +40,7 @@ def login_required(test):
 def MaintenanceLogs(panel_id):
     panel_id=panel_id
     open_logs=db.session.query(Maintenance_Logs).filter_by(status='1', MaintenanceLog_panel_id = panel_id).order_by(Maintenance_Logs.priority.desc())
-    closed_logs=db.session.query(Maintenance_Logs).filter_by(status ='0').order_by(Maintenance_Logs.priority.desc())
+    closed_logs=db.session.query(Maintenance_Logs).filter_by(status ='0',  MaintenanceLog_panel_id = panel_id).order_by(Maintenance_Logs.priority.desc())
     
     return render_template(
         'QR_dataview_logs.html',
