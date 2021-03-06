@@ -77,7 +77,7 @@ class Panel(db.Model):
     name=db.Column(db.String, nullable=False)
     panel_project_id=db.Column(db.Integer, db.ForeignKey('projects.project_id'))
     panel_project_customer_id=db.Column(db.Integer, db.ForeignKey('customers.customer_id'))
-    logs=db.relationship('Maintenance_Logs', backref='logs')
+    
     
 
     def __init__(self, name, panel_project_id, panel_project_customer_id):
@@ -110,7 +110,7 @@ class QRcode(db.Model):
 class Maintenance_Logs(db.Model):
     __tablename__ = "Maintenance_Logs"
     MaintenanceLog_id = db.Column(db.Integer, primary_key=True)
-    MaintenanceLog_panel_id= db.Column(db.Integer, db.ForeignKey('panels.panel_id'))
+    MaintenanceLog_panel_id= db.Column(db.Integer, nullable= False)
     maintenance_issue= db.Column(db.String, nullable=False)
     posted_date = db.Column(db.Date, default=datetime.datetime.utcnow())
     priority = db.Column(db.Integer, nullable=False)

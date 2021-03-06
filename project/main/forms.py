@@ -78,7 +78,7 @@ class SendEmailLink(Form):
 
 class AddMaintenanceLog(Form):
     MaintenanceLog_id = IntegerField()
-    MaintenanceLog_panel_id= IntegerField()
+    MaintenanceLog_panel_id= IntegerField('Maintenance Log Panel ID')
     maintenance_issue = StringField('Maintenance Issue', validators=[DataRequired()])
     posted_date=due_date = DateField(
         'Posted Date ',

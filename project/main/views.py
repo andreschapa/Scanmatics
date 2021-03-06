@@ -57,10 +57,10 @@ def new_MaintenanceLog(panel_id):
     if request.method == 'POST':
         if form.validate_on_submit():
             new_MaintenanceLog=Maintenance_Logs(
-            panel_id,
+            
             form.maintenance_issue.data,
-            form.priority.data,
             datetime.datetime.utcnow(),
+            form.priority.data,
             '1'
             )
             db.session.add(new_MaintenanceLog)
