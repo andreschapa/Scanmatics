@@ -89,15 +89,24 @@ def complete_MaintenanceLog(MaintenanceLog_id):
 
 @main_blueprint.route('/deleteMaintenancelog/<int:MaintenanceLog_id>/')
 def delete_MaintenanceLog(MaintenanceLog_id):
-    New_id=MaintenanceLog_id
-    maintenancelog=db.session.query(Maintenance_Logs).filter_by(MaintenanceLog_id=New_id)
+    new_id=MaintenanceLog_id
+    maintenancelog=db.session.query(Maintenance_Logs).filter_by(MaintenanceLog_id=new_id).first()
     panel_id=maintenancelog.MaintenanceLog_panel_id
-    maintenancelog.delete()
+    db.session.query(Maintenance_Logs).filter_by(MaintenanceLog_id=new_id).delete()
     db.session.commit()
     flash('The maintenance log was deleted.')
     return redirect(url_for('main.MaintenanceLogs', panel_id=panel_id))
 
 
+    #new_id = project_id
+   # project=Project.query.filter_by(project_id=project_id).first()
+   # customer_id=project.project_customer_id
+   # db.session.query(Project).filter_by(project_id=new_id).delete()
+   # db.session.query(Panel).filter_by(panel_project_id=new_id).delete()
+   # db.session.commit()
+   # flash('project has been deleted.')
+    #return redirect(url_for('main.projects', customer_id=customer_id))
+    
 
 
 
