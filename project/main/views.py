@@ -77,9 +77,9 @@ def new_MaintenanceLog(panel_id):
 @main_blueprint.route('/complete/#<int:MaintenanceLog_id>/', methods=['GET','POST'])
 def complete_MaintenanceLog(MaintenanceLog_id):
     error=None
-    New_id=MaintenanceLog_id
+    new_id=MaintenanceLog_id
     form=AddMaintenanceLog(request.form)
-    maintenancelog=db.session.query(Maintenance_Logs).filter_by(MaintenanceLog_id=New_id)
+    maintenancelog=db.session.query(Maintenance_Logs).filter_by(MaintenanceLog_id=new_id).first()
     panel_id=maintenancelog.MaintenanceLog_panel_id
     if request.method=='POST':
         maintenancelog.update({"status": "0"})
