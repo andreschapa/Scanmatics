@@ -38,8 +38,8 @@ def login_required(test):
 
 @main_blueprint.route('/MaintenanceLogs/#<int:panel_id>/')
 def MaintenanceLogs(panel_id):
-    open_logs=db.session.query(Maintenance_Logs).filter_by(status='1').order_by(Maintenance_Logs.priority.desc())
-    closed_logs=db.session.query(Maintenance_Logs).filter_by(MaintenanceLog_panel_id=panel_id, status='0').order_by(Maintenance_Logs.priority.desc())
+    open_logs=db.session.query(Maintenance_Logs).filter_by(priority='1').order_by(Maintenance_Logs.priority.desc())
+    closed_logs=db.session.query(Maintenance_Logs).filter_by(priority ='0').order_by(Maintenance_Logs.priority.desc())
     panel_id=panel_id
     return render_template(
         'QR_dataview_logs.html',
