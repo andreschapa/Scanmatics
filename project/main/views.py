@@ -38,8 +38,8 @@ def login_required(test):
 
 @main_blueprint.route('/MaintenanceLogs/#<int:panel_id>/')
 def MaintenanceLogs(panel_id):
-    open_logs=db.session.query(Maintenance_Logs).filter_by(priority='1').order_by(Maintenance_Logs.priority.desc())
-    closed_logs=db.session.query(Maintenance_Logs).filter_by(priority ='0').order_by(Maintenance_Logs.priority.desc())
+    open_logs=db.session.query(Maintenance_Logs).filter_by(status='1').order_by(Maintenance_Logs.priority.desc())
+    closed_logs=db.session.query(Maintenance_Logs).filter_by(status ='0').order_by(Maintenance_Logs.priority.desc())
     panel_id=panel_id
     return render_template(
         'QR_dataview_logs.html',
@@ -96,17 +96,6 @@ def delete_MaintenanceLog(MaintenanceLog_id):
     db.session.commit()
     flash('The maintenance log was deleted.')
     return redirect(url_for('main.MaintenanceLogs', panel_id=panel_id))
-
-
-    #new_id = project_id
-   # project=Project.query.filter_by(project_id=project_id).first()
-   # customer_id=project.project_customer_id
-   # db.session.query(Project).filter_by(project_id=new_id).delete()
-   # db.session.query(Panel).filter_by(panel_project_id=new_id).delete()
-   # db.session.commit()
-   # flash('project has been deleted.')
-    #return redirect(url_for('main.projects', customer_id=customer_id))
-    
 
 
 
