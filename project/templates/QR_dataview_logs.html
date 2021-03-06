@@ -62,7 +62,7 @@
                         <h4 class="modal-title">Maintenance Performed</h4>
                       </div>
                       <div class="modal-body">
-                        <form action="{{ url_for('main.complete_MaintenanceLog', MaintenanceLog_id=MaintenanceLogs.MaintenanceLog_id ) }}" method="post">
+                        <form action="{{ url_for('main.complete_MaintenanceLog', MaintenanceLog_id=ML.MaintenanceLog_id ) }}" method="post">
                           {{ form.csrf_token }}
                           <p>
                           
