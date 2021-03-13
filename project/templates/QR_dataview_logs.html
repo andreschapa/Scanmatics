@@ -43,9 +43,7 @@
             <a href="{{ url_for('main.delete_MaintenanceLog', MaintenanceLog_id = ML.MaintenanceLog_id) }}">
               <button type="submit" class="btn btn-danger btn-sm">Delete</button>
             </a>
-            
-            
-                
+  
               <!-- Trigger the modal with a button -->
               <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#myModal">Complete Maintenance Log</button>
             
@@ -86,7 +84,12 @@
           </td>
 
         </tr>
+      <br>
+      <br>
+
       {% endfor %}
+      <br>
+      <br>
     </table>
   </div>
 </div>
