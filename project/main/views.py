@@ -82,8 +82,7 @@ def complete_MaintenanceLog(MaintenanceLog_id):
     maintenancelog=db.session.query(Maintenance_Logs).filter_by(MaintenanceLog_id=new_id).first()
     panel_id=maintenancelog.MaintenanceLog_panel_id
     if request.method=='POST':
-        #maintenancelog.update({"status": "0"})
-        #maintenancelog.update({"action_taken": f"{form.action_taken.data}"})
+        
         maintenancelog.status='0'
         maintenancelog.action_taken=f"{form.action_taken.data}"
         db.session.commit()
@@ -211,7 +210,7 @@ def emailQRlink(panel_id):
             return redirect(url_for('main.QRfiles', panel_id=panel_id))
 
 
-# <a href=f"https://gentle-refuge-43155.herokuapp.com/QRlink/{panel_id}/">here</a>
+
     
 #register customer
 @main_blueprint.route('/register/', methods=['GET', 'POST'])

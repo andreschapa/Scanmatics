@@ -54,22 +54,7 @@ class AddProjectForm(Form):
 class AddPanelForm(Form):
     panel_id=IntegerField()
     name=StringField('Panel Name', validators=[DataRequired()])
-
-class RequestResetForm(Form):
-    email= StringField(
-        'Email',
-        validators=[DataRequired(), Email(), Length(min=6, max=40)])
-    submit=SubmitField('Request Password Reset')
-
-class ResetPasswordForm(Form):
-    password = PasswordField(
-        'Password',
-        validators=[DataRequired(), Length(min=6, max=40)])
-    confirm= PasswordField(
-        'Repeat Password',
-        validators=[DataRequired(), EqualTo('password', message='Passwords must match')])
-    submit=SubmitField('Reset Password')
-    
+ 
 
 class SendEmailLink(Form):
     email= StringField(
@@ -91,4 +76,17 @@ class AddMaintenanceLog(Form):
     action_taken= StringField('Action Taken') # might have to get rid of validators since this can be nullable
 
 
+class RequestResetForm(Form):
+    email= StringField(
+        'Email',
+        validators=[DataRequired(), Email(), Length(min=6, max=40)])
+   
 
+class ResetPasswordForm(Form):
+    password = PasswordField(
+        'Password',
+        validators=[DataRequired(), Length(min=6, max=40)])
+    confirm= PasswordField(
+        'Repeat Password',
+        validators=[DataRequired(), EqualTo('password', message='Passwords must match')])
+    submit=SubmitField('Reset Password')
