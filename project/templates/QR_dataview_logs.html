@@ -39,6 +39,7 @@
           <td width="300px">{{ ML.posted_date }}</td>
           <td width="300px">{{ ML.priority }}</td>
           <td width="300px">
+        </tr>
               <div>
               <a href="{{ url_for('main.delete_MaintenanceLog', MaintenanceLog_id = ML.MaintenanceLog_id) }}">
                 <button type="submit" class="btn btn-danger btn-sm">Delete</button>
@@ -85,7 +86,6 @@
             </div>
   
           </td>
-        </tr>
       {% endfor %}
     </table>
   </div>
