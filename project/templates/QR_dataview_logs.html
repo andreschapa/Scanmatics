@@ -35,10 +35,17 @@
       </thead>
       {% for ML in open_logs %}
         <tr>
-          <td width="300px">{{ ML.maintenance_issue }}</td>
-          <td width="300px">{{ ML.posted_date }}</td>
-          <td width="300px">{{ ML.priority }}</td>
-          <td width="300px">
+          <td >{{ ML.maintenance_issue }}</td>
+          <td >{{ ML.posted_date }}</td>
+          <td >{{ ML.priority }}</td>
+          <td>
+            <div>
+              <a href="{{ url_for('main.delete_MaintenanceLog', MaintenanceLog_id = ML.MaintenanceLog_id) }}">
+                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+              </a>
+              </div>
+          </td>
+
         </tr>
               <div>
               <a href="{{ url_for('main.delete_MaintenanceLog', MaintenanceLog_id = ML.MaintenanceLog_id) }}">
@@ -85,7 +92,7 @@
                 </div>
             </div>
   
-          </td>
+          
       {% endfor %}
     </table>
   </div>
