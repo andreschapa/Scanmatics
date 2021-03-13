@@ -1,4 +1,9 @@
 #from views import db
+import os
+import jwt
+from time import time
+from flask_login import UserMixin
+from werkzeug.security import generate_password_hash, check_password_hash
 from project import db, app
 import datetime
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
@@ -19,7 +24,7 @@ class Customer(db.Model):
     def __repr__(self):
         return '<name {0}>'.format(self.name)
 
-class User(db.Model):
+class User(UserMixin, db.Model):
 
     __tablename__='users'
 
@@ -30,18 +35,24 @@ class User(db.Model):
     company = db.Column(db.String, nullable=False, unique= True)
     customers=db.relationship('Customer', backref='poster')
 
-    def get_reset_token(self, expires_sec=1800):
-        s=Serializer('myprecious', expires_sec)
-        return s.dumps({'user_id': self.id}).decode('utf-8')
+  
+
+    def get_reset_token(self, expires=500):
+        return jwt.encode({'reset_password': self.username, 'exp': time() + expires},
+                           key='myprecious')
+
+
+    
 
     @staticmethod
     def verify_reset_token(token):
-        s=Serializer('myprecious')
         try:
-            user_id = s.loads(token)['user_id']
-        except:
-            return None
-        return User.query.get(user_id)
+            name = jwt.decode(token, key='myprecious'['reset_password'])
+            print(name)
+        except Exception as e:
+            print(e)
+            return
+        return User.query.filter_by(name=name).first()
 
 
     def __init__(self, name=None, email=None, password=None, company=None):

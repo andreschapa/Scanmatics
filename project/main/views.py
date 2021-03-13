@@ -14,6 +14,13 @@ import boto3
 import os
 import datetime
 
+
+####### 3/13 password reset
+from flask_jwt_extended import jwt_required, create_access_token, get_jwt_identity
+import flask_login
+#######
+
+
 S3_BUCKET=os.environ.get('S3_BUCKET')
 s3=boto3.client('s3')
 
@@ -527,21 +534,36 @@ def QRlinkupload(panel_id):
 
 
 
+def send_email(user):
 
+    token = user.get_reset_token()
+
+    msg = Message()
+    msg.subject = "Password Reset Request"
+    msg.sender = 'main@scanmatics.com'
+    msg.recipients = [user.email]
+    msg.html = render_template('reset_email.html', user=user, token=token)
+
+    mail.send(msg)
 
 
 
 @main_blueprint.route('/reset_password', methods=['GET', 'POST'])
 def reset_request():
     form=RequestResetForm(request.form)
-    if form.validate_on_submit():
-        user=User.query.filter_by(email=request.data).first()
-        if user:
-            send_reset_email(user)
+    
+    if request.method == 'POST':
+        if form.validate_on_submit():
+            email=request.form['email']
+            user=User.verify_email(email)
+            if user:
+                send_email(user)
         
-        flash('Check your email for instructions to reset your password')
-        return redirect(url_for('main.login'))
+            flash('Check your email for instructions to reset your password')
+            return redirect(url_for('main.login'))
     return render_template('reset_request.html', title='Reset Password', form=form)
+
+
 
 @main_blueprint.route('/reset_password/<token>', methods=['GET', 'POST'])
 def reset_token(token):
@@ -549,6 +571,8 @@ def reset_token(token):
     if user is None:
         flash('That is an invalid or expired token', 'warning')
         return redirect(url_for('reset_request'))
+
+        
     form = ResetPasswordForm(request.form)
     if form.validate_on_submit():
             
@@ -558,6 +582,11 @@ def reset_token(token):
         flash('Your password has been updated.')
         return redirect(url_for('main.login'))
     return render_template('reset_token.html', title='Reset Password',form= form)
+
+
+
+
+
 
 def send_reset_email(user):
     token = user.get_reset_token()
@@ -569,7 +598,6 @@ def send_reset_email(user):
 If you did not make this request then simply ignore this email and no changes will be made.
 '''
     mail.send(msg)
-
 
 
 
