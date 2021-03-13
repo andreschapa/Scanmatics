@@ -63,10 +63,12 @@
                         <form action="{{ url_for('main.complete_MaintenanceLog', MaintenanceLog_id=ML.MaintenanceLog_id ) }}" method="post">
                           {{ form.csrf_token }}
                           <p>
-                          
+                          <div>
                           {{ form.action_taken.label }}
+                          </div>
+                          <div>
                           {{ form.action_taken }}
-                          
+                          </div>
                           </p>
                           <div class="modal-footer">
                             <p><input class="btn btn-default" type="submit" value="Close and Complete Maintenance Log"></p>
