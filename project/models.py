@@ -50,11 +50,12 @@ class User(UserMixin, db.Model):
     def verify_reset_token(token):
         try:
             name = jwt.decode(token, key='myprecious')['reset_password']
+            user=User.query.filter_by(name=name).first()
             print(name)
         except Exception as e:
             print(e)
             return
-        return User.query.filter_by(name=name).first()
+        return user
 
 
     def __init__(self, name=None, email=None, password=None, company=None):
