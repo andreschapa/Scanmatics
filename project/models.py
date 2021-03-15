@@ -37,19 +37,24 @@ class User(UserMixin, db.Model):
 
   
 
+    #def get_reset_token(self, expires=500):
+        #return jwt.encode({'reset_password': self.name, 'exp': time() + expires},
+                           #key='myprecious')
+
     def get_reset_token(self, expires=500):
-        return jwt.encode({'reset_password': self.name, 'exp': time() + expires},
-                           key='myprecious')
-
-    #def get_reset_token(self, expires_sec=1800):
-        #s = Serializer('myprecious', expires_sec)
-        #return s.dumps({'reset_password': self.name}).decode('utf-8')
+        return jwt.encode({'reset_password': self.name,
+                           'exp':    time() + expires},
+                           key=os.getenv('SECRET_KEY_FLASK'))                       
 
 
-    
+
+
+    @staticmethod
     def verify_reset_token(token):
         try:
-            name = jwt.decode(token, key='myprecious')['reset_password']
+            #name = jwt.decode(token, key='myprecious')['reset_password']
+            name = jwt.decode(token,
+              key=os.getenv('SECRET_KEY_FLASK'))['reset_password']
             
             print(name)
         except Exception as e:
