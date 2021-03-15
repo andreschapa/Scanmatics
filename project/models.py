@@ -44,7 +44,7 @@ class User(UserMixin, db.Model):
     def get_reset_token(self, expires=500):
         key='myprecious'
         return jwt.encode({'reset_password': self.name,
-                           'exp':    time() + expires}, key, algorithms="HS256"
+                           'exp':    time() + expires}, key, algorithm="HS256"
                            )                       
 
 
