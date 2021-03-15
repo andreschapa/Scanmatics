@@ -57,14 +57,14 @@ class User(UserMixin, db.Model):
         return User.query.filter_by(name=name).first()
 
 
-    def __init__(self, name=None, email=None, password=None, company=None):
-        self.name= name
-        self.email=email
-        self.password=password
-        self.company= company
+    #def __init__(self, name=None, email=None, password=None, company=None):
+        #self.name= name
+        #self.email=email
+        #self.password=password
+        #self.company= company
 
     def __repr__(self):
-        return '<User {0}>'.format(self.name) ##might need to come back and also return company name
+        return '<User {}>'.format(self.name) ##might need to come back and also return company name
 
 class Project(db.Model):
 
