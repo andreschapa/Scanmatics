@@ -534,10 +534,12 @@ def QRlinkupload(panel_id):
 
     return redirect(url_for('main.QRlink', panel_id=panel_id))
 
-
+def get_reset_token(self, expires=500):
+        key='myprecious'
+        return jwt.encode({'reset_password': self.name}, key='myprecious', algorithm="HS256")
 
 def send_email(user):
-   
+    
     token = user.get_reset_token()
     msg = Message()
     msg.subject = f"{token}"
@@ -575,9 +577,9 @@ def reset_token(token):
     user=User.query.filter_by(name=name).first()
     
 
-    if not user:
-        flash('That is an invalid or expired token', 'warning')
-        return redirect(url_for('main.reset_request'))
+    #if not user:
+       # flash('That is an invalid or expired token', 'warning')
+       # return redirect(url_for('main.reset_request'))
 
 
     form = ResetPasswordForm(request.form)
