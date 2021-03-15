@@ -3,7 +3,7 @@
 <img src=https://media-exp1.licdn.com/dms/image/C4E0BAQH9ry_VPEPBPw/company-logo_200_200/0/1609696203090?e=1617840000&v=beta&t=zZvbSC0Zr3i8zwrTiRD5o6XwapPBs4lByvXKSOJi6ZA>
 <h1>Password Reset</h1>
 
-<form method="post" action="{{ url_for('main.reset_token') }}">
+<form method="post" action="{{ url_for('main.reset_token', token=token) }}">
     {{ form.csrf_token }}
     <div>
         {{ form.password.label }}
