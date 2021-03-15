@@ -59,6 +59,7 @@ class User(UserMixin, db.Model):
             key='myprecious'
             #name = jwt.decode(token, key='myprecious')['reset_password']
             name =jwt.decode(token, key, algorithms='256')['reset_password']
+            User.query.filter_by(name=name).first()
             print(name)
             
         except Exception as e:
