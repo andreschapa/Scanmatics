@@ -575,13 +575,14 @@ def reset_token(token):
 
 
     form = ResetPasswordForm(request.form)
-    if form.validate_on_submit():
+    if request.method== 'POST':
+        if form.validate_on_submit():
             
-        hashed_password=bcrypt.generate_password_hash(form.password.data).decode('utf-8'),####### added.decode(utf-8)
-        user.password=hashed_password               
-        db.session.commit()
-        flash('Your password has been updated.')
-        return redirect(url_for('main.login'))
+            hashed_password=bcrypt.generate_password_hash(form.password.data).decode('utf-8'),####### added.decode(utf-8)
+            user.password=hashed_password               
+            db.session.commit()
+            flash('Your password has been updated.')
+            return redirect(url_for('main.login'))
     return render_template('reset_token.html', title='Reset Password',form= form)
 
 
