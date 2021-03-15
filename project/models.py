@@ -41,7 +41,7 @@ class User(UserMixin, db.Model):
         #return jwt.encode({'reset_password': self.name, 'exp': time() + expires},
                            #key='myprecious')
 
-    def get_reset_token(self, expires=500):
+    def get_reset_token(self, expires=5000):
         return jwt.encode({'reset_password': self.name,
                            'exp':    time() + expires}, key='myprecious'
                            )                       
@@ -60,7 +60,7 @@ class User(UserMixin, db.Model):
             print(e)
             return
          
-        return User.query.filter_by(name='andres').first()
+        return User.query.filter_by(name=name).first()
 
     def __init__(self, name=None, email=None, password=None, company=None):
         self.name= name
