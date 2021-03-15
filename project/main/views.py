@@ -573,7 +573,7 @@ def reset_token(token):
     
     
             #name = jwt.decode(token, key='myprecious')['reset_password']
-    name =jwt.decode(token, key='myprecious',options={"verify_signature": False}, algorithms='256')['reset_password']
+    name =jwt.decode(token, key='myprecious',options={"verify_signature": True}, algorithms='256')['reset_password']
     user=User.query.filter_by(name=name).first()
     
 
