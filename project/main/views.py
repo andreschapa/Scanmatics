@@ -569,7 +569,7 @@ def reset_request():
 @main_blueprint.route('/reset_password_verified/<token>', methods=['GET', 'POST'])
 def reset_token(token):
     user=User.verify_reset_token(token)
-    if user is None:
+    if not user:
         flash('That is an invalid or expired token', 'warning')
         return redirect(url_for('main.reset_request'))
 
