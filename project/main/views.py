@@ -1,6 +1,7 @@
 #views
 from .forms import AddCustomerForm, RegisterForm, LoginForm, AddProjectForm, AddPanelForm,RegisterQRForm, RequestResetForm, ResetPasswordForm, SendEmailLink, AddMaintenanceLog
-
+import jwt
+from time import time
 from functools import wraps
 from flask import Flask, flash, redirect, render_template, \
 request, session, url_for, Response, Blueprint
@@ -8,6 +9,7 @@ from sqlalchemy.exc import IntegrityError
 from flask_mail import Message, Mail
 from project.models import Customer, User, Project, Panel, QRcode, Maintenance_Logs
 from project import db, bcrypt , mail
+import datetime
 main_blueprint= Blueprint('main', __name__)
 
 import boto3
@@ -535,9 +537,8 @@ def QRlinkupload(panel_id):
 
 
 def send_email(user):
-
+   
     token = user.get_reset_token()
-
     msg = Message()
     msg.subject = "Password Reset Request"
     msg.sender = 'main@scanmatics.com'
@@ -545,7 +546,6 @@ def send_email(user):
     msg.html = render_template('reset_email.html', user=user, token=token)
 
     mail.send(msg)
-
 
 
 @main_blueprint.route('/reset_password', methods=['GET', 'POST'])
