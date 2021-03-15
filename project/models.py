@@ -37,13 +37,13 @@ class User(UserMixin, db.Model):
 
   
 
-    #def get_reset_token(self, expires=500):
-        #return jwt.encode({'reset_password': self.name, 'exp': time() + expires},
-                           #key='myprecious')
+    def get_reset_token(self, expires=500):
+        return jwt.encode({'reset_password': self.name, 'exp': time() + expires},
+                           key='myprecious')
 
-    def get_reset_token(self, expires_sec=1800):
-        s = Serializer('myprecious', expires_sec)
-        return s.dumps({'reset_password': self.name}).decode('utf-8')
+    #def get_reset_token(self, expires_sec=1800):
+        #s = Serializer('myprecious', expires_sec)
+        #return s.dumps({'reset_password': self.name}).decode('utf-8')
 
 
     @staticmethod
