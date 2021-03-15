@@ -54,7 +54,7 @@ class User(UserMixin, db.Model):
         except Exception as e:
             print(e)
             return
-        return user=User.query.filter_by(name=name).first()
+        return User.query.filter_by(name=name).first()
 
 
     def __init__(self, name=None, email=None, password=None, company=None):
