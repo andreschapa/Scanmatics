@@ -49,7 +49,7 @@ class User(UserMixin, db.Model):
     @staticmethod
     def verify_reset_token(token):
         try:
-            name = jwt.decode(token, key='myprecious'['reset_password'])
+            name = jwt.decode(token, key='myprecious')['reset_password']
             print(name)
         except Exception as e:
             print(e)
