@@ -46,17 +46,16 @@ class User(UserMixin, db.Model):
         #return s.dumps({'reset_password': self.name}).decode('utf-8')
 
 
-    @staticmethod
+    
     def verify_reset_token(token):
         try:
             name = jwt.decode(token, key='myprecious')['reset_password']
-            user=User.query.filter_by(name=name).first()
+            
             print(name)
         except Exception as e:
             print(e)
             return
-        return user
-
+        return User.query.filter_by(name=name).first()
 
     def __init__(self, name=None, email=None, password=None, company=None):
         self.name= name
