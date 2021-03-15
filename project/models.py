@@ -41,9 +41,10 @@ class User(UserMixin, db.Model):
         #return jwt.encode({'reset_password': self.name, 'exp': time() + expires},
                            #key='myprecious')
 
-    def get_reset_token(self, expires=5000):
+    def get_reset_token(self, expires=500):
+        key='myprecious'
         return jwt.encode({'reset_password': self.name,
-                           'exp':    time() + expires}, key='myprecious'
+                           'exp':    time() + expires}, key, algorithms="HS256"
                            )                       
 
 
@@ -52,8 +53,9 @@ class User(UserMixin, db.Model):
     @staticmethod
     def verify_reset_token(token):
         try:
+            key='myprecious'
             #name = jwt.decode(token, key='myprecious')['reset_password']
-            name =jwt.decode(token, key='myprecious')['reset_password']
+            name =jwt.decode(token, key, algorithms='256')['reset_password']
             print(name)
             
         except Exception as e:
