@@ -555,7 +555,8 @@ def reset_request():
     if request.method == 'POST':
         if form.validate_on_submit():
             email=request.form['email']
-            user=User.verify_email(email)
+            user=User.query.filter_by(email=email).first()
+
             if user:
                 send_email(user)
         
@@ -565,14 +566,14 @@ def reset_request():
 
 
 
-@main_blueprint.route('/reset_password/<token>', methods=['GET', 'POST'])
+@main_blueprint.route('/reset_password_verified/<token>', methods=['GET', 'POST'])
 def reset_token(token):
     user=User.verify_reset_token(token)
     if user is None:
         flash('That is an invalid or expired token', 'warning')
         return redirect(url_for('reset_request'))
 
-        
+
     form = ResetPasswordForm(request.form)
     if form.validate_on_submit():
             

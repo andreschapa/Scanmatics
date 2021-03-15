@@ -42,7 +42,6 @@ class User(UserMixin, db.Model):
                            key='myprecious')
 
 
-    
 
     @staticmethod
     def verify_reset_token(token):
