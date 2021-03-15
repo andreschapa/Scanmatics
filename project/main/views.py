@@ -562,7 +562,7 @@ def reset_request():
         
             flash('Check your email for instructions to reset your password')
             return redirect(url_for('main.login'))
-    return render_template('reset_request.html', title='Reset Password', form=form)
+    return render_template('reset_request.html', form=form)
 
 
 
