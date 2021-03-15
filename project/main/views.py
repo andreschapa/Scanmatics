@@ -569,9 +569,9 @@ def reset_request():
 @main_blueprint.route('/reset_password_verified/<token>', methods=['GET', 'POST'])
 def reset_token(token):
     
-    key='myprecious'
+    
             #name = jwt.decode(token, key='myprecious')['reset_password']
-    name =jwt.decode(token, key, algorithms='256')['reset_password']
+    name =jwt.decode(token, key='myprecious', algorithms='256')['reset_password']
     user=User.query.filter_by(name=name).first()
     
 
