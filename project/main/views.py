@@ -583,7 +583,7 @@ def reset_token(token):
             db.session.commit()
             flash('Your password has been updated.')
             return redirect(url_for('main.login'))
-    return render_template('reset_token.html', title='Reset Password',form= form)
+    return render_template('reset_token.html', title='Reset Password',form=form)
 
 
 
