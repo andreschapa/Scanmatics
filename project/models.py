@@ -35,24 +35,11 @@ class User(UserMixin, db.Model):
     company = db.Column(db.String, nullable=False, unique= True)
     customers=db.relationship('Customer', backref='poster')
 
-  
 
-    #def get_reset_token(self, expires=500):
-        #return jwt.encode({'reset_password': self.name, 'exp': time() + expires},
-                           #key='myprecious')
-
-    def get_reset_token(self, expires=500):
+    def get_reset_token(self, expires=50):
         key='myprecious'
-        #return jwt.encode({'reset_password': self.name}, key='myprecious', algorithm="HS256")
         return jwt.encode({'reset_password': self.name, 'exp': time() + expires},
                            key= 'myprecious', algorithm="HS256")
-
-
-        #return jwt.encode({'reset_password': self.name,
-                          # 'exp':    time() + expires}, key, algorithm="HS256"
-                         #  )                       
-
-
 
 
     @staticmethod
